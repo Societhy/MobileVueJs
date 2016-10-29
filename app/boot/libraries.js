@@ -1,0 +1,5 @@
+window.$ = window.jQuery = require('jquery')
+window._ = require('lodash')
+// require('bootstrap-sass/assets/javascripts/bootstrap.js')
+require('materialize-css/dist/js/materialize.js')
+// require('jquery-validation/dist/jquery.validate.js')
