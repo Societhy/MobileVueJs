@@ -13,5 +13,11 @@ export default [
         path: '/test',
         name: 'test',
         component: require('./components/test.vue')
+    },
+    {
+        path: '/profil',
+        name: 'profil',
+        component: require('./components/profil.vue')
     }
+
 ]

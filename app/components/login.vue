@@ -1,4 +1,4 @@
-ht<template>
+<template>
 
     <div class="container">
 	    <div class="row center-align">

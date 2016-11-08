@@ -30,6 +30,10 @@
                     <input id="password_confirm" type="password" class="validate" v-model="password_confirm">
                     <label for="password_confirm" class="left-align">Password confirm</label>
                 </div>
+                <div class="input-field col s0 offset-s1">
+                    <input id="EthereumPrivateKey" type="checkbox"  class="validate"  v-model="checked">
+                    <label for="EthereumPrivateKey" class="left-align">Generate a ethereum private key</label>
+                </div>
             </div>
             <div class="row">
                 <a @click="submitForm" class="waves-effect waves-light btn">Confirm</a>
@@ -53,10 +57,11 @@
             return {
                 firstName: "",
                 lastName: "",
-                phone: "",
+                login: "",
                 email: "",
                 password: "",
                 password_confirm: "",
+                EthereumPrivateKey: "",
             }
         },
 
@@ -76,8 +81,8 @@
                     email: this.email,
                     password: this.password,
                     password_confirm: this.password,
+                    EthereumPrivateKey: this.EthereumPrivateKey,
                     sex: "male",
-
                     grant_type: "password",
                     client_id: 1,
                     client_secret: this.client_secret,
@@ -85,7 +90,7 @@
                 };
 
                 this.$http({
-                    url: 'http://argos-cubehq-com-mrctmu3ds5hr.runscope.net/register',
+                    url: '/register',
                     method: 'POST',
                     body: dataArray
                 }).then(function (response) {
@@ -107,7 +112,7 @@
             },
             addValidation() {
 
-            }
+            },
 
         }
     }
