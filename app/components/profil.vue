@@ -4,16 +4,25 @@
         <div class="card-panel grey lighten-5 z-depth-1">
           <div class="row">
             <div class="imgProfile-renderer col s4">
-              <img src="./img/arthurSalop.jpg" alt="" class="responsive-img">
+              <img src="./img/arthurSalop.jpg" alt="" class="responsive-img" id="image" v-bind:src="image_view">
             </div>
-                <div class="input-field col s4">
-                    <input id="first_name" type="text" class="validate" v-model="firstName" disabled="disabled">
-                    <label for="last_name">First Name</label>
-                </div>
-                <div class="input-field col s4">
-                    <input id="last_name" type="text" class="validate" v-model="lastName" disabled="disabled">
-                    <label for="last_name">Last Name</label>
-                </div>
+            <div class="input-field col s3">    
+                <input id="first_name" type="text" name="first_name" class="validate" v-model="firstName" disabled="disabled">
+                <label for="first_name">First Name</label>
+            </div>
+            <div class="input-field col s3">
+                <input id="last_name" type="text" name="last_name" class="validate" v-model="lastName" disabled="disabled">
+                <label for="last_name">Last Name</label>
+            </div>
+            <div>
+                <a @click.prevent="openCamera" class="btn-floating btn-large waves-effect waves-light red"><i class="fa fa-camera-retro"></i></a>
+            </div>
+            </div>
+            <div class='row'>
+                <blockquote>
+                    <span>Lattitude: {{ lat }}</span>
+                    <span>Longitude: {{ lng }}</span>
+                </blockquote>
             </div>
         </div>
         <div class="carousel carousel-slider center card-panel grey lighten-5 z-depth-1" data-indicators="true">
@@ -58,18 +67,66 @@
         name: 'profil',
 
         store: ['message', 'auth_data', 'client_secret'],
+
         data: function () {
             return {
                 firstName: "Arthur",
                 lastName: "Ngo-van",
                 email: "aurthurNgo@gmail.vietnam",
                 phone: "6666666666",
+                image_view: null,
+                lat: 'null',
+                lng: 'null',
             }
         },
         mounted() {
             $('.carousel.carousel-slider').carousel({full_width: true});
+
+            if (navigator.geolocation) {
+
+                console.log("try goelocation");
+
+                navigator.geolocation.watchPosition(this.geolocationSuccess,
+                                             this.geolocationError,
+                                             { enableHighAccuracy: true, dtimeout : 5000});
+            }
+
         },
+
         methods: {
+
+            openCamera() {
+                navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+                destinationType: Camera.DestinationType.FILE_URI
+                });
+                var self = this
+
+                function onSuccess(imageData) {
+
+                    console.log('success getting photo');
+                    self.image_view = imageData;
+                    $("#image").rotate(-90)
+                }
+
+                function onFail(message) {
+
+                    alert('Failed because: ' + message);
+                    console.log('error getting photo');
+                }
+
+            },
+
+            geolocationError () {
+                console.log('geolocation err');
+            },
+
+            geolocationSuccess(position) {
+                console.log('geolocation success');
+                console.log(position.coords.latitude)
+                this.lat = position.coords.latitude
+                this.lng = position.coords.longitude
+
+            },
         }
     }
 </script>

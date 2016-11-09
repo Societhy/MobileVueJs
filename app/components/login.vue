@@ -20,7 +20,10 @@
 	            </div>
 	        </div>
 	        <div class="row">
-	            <a @click.prevent="submitForm" class="waves-effect waves-light btn">Sign In</a>
+                <router-link :to="{ name: 'profil' }" class="waves-effect waves-light btn">
+                    Sign In
+                </router-link>
+	            <!-- <a @click.prevent="submitForm" class="waves-effect waves-light btn">Sign In</a> -->
 	        </div>
 	        <div class="row">
 	            <router-link :to="{ name: 'register' }">
