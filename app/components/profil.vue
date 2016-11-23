@@ -1,59 +1,128 @@
 <template>
     <div class="container">
-        <div class="col s12 m8 offset-m2 l6 offset-l3">
-        <div class="card-panel grey lighten-5 z-depth-1">
-          <div class="row">
-            <div class="imgProfile-renderer col s4">
-              <img src="./img/arthurSalop.jpg" alt="" class="responsive-img" id="image" v-bind:src="image_view">
+        <div id="upper_profile_div" class="parallax-container">
+            <div class="parallax">
+                <img id="background_pic" class="centered no_fit" v-bind:src="cover_url">
             </div>
-            <div class="input-field col s3">    
-                <input id="first_name" type="text" name="first_name" class="validate" v-model="firstName" disabled="disabled">
-                <label for="first_name">First Name</label>
-            </div>
-            <div class="input-field col s3">
-                <input id="last_name" type="text" name="last_name" class="validate" v-model="lastName" disabled="disabled">
-                <label for="last_name">Last Name</label>
-            </div>
-            <div>
-                <a @click.prevent="openCamera" class="btn-floating btn-large waves-effect waves-light red"><i class="fa fa-camera-retro"></i></a>
-            </div>
-            </div>
-            <div class='row'>
-                <blockquote>
-                    <span>Lattitude: {{ lat }}</span>
-                    <span>Longitude: {{ lng }}</span>
-                </blockquote>
-            </div>
-        </div>
-        <div class="carousel carousel-slider center card-panel grey lighten-5 z-depth-1" data-indicators="true">
-         <div class="carousel-item blue white-text" href="#one!">
-            <div class="row">
-                <div class="col s12">
-                    <h2>Personal information</h2>
+            <div class="absolute" id="profile_div">
+                <div id="picture_div" class="absolute z-depth-5">
+                    <img id="profile_pic" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" alt="" class="square responsive-img centered">
+                    <a @click.prevent="openCamera" id="camera_button" class="btn-floating btn-large waves-effect waves-light red">
+                        <i class="fa fa-camera-retro"></i>
+                    </a>
                 </div>
-                <div class="col s6">
-                    <input id="email" type="text" class="validate white-text" v-model="email"
-                    disabled="disabled">
-                    <label for="email" class="white-text">Email</label>
-                </div>
-                <div class="col s6">
-                    <input id="phone" type="text" class="validate white-text" v-model="phone"
-                    disabled="disabled">
-                    <label for="phone" class="white-text">Phone</label>
+                <div class="absolute black full_screen transparent_low">
+                    <div id="profile_infos" class="center-align full_screen">
+                        <div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="carousel-item green white-text" href="#two!">
-            <h2>Activity</h2>
-            <p class="white-text">This is your second panel</p>
+        <div class="section white">
+            <div class="profile_block z-depth-3">
+                <h2 class="header">Mes Infos</h2>
+                <div class="row">
+                    <div class="col s5">
+                        <div class="field_header">First Name</div>
+                    </div>
+                    <div class="col s6 editable">
+                        <input id="firstName" type="text" class="user_input disabled" v-model="firstName">
+                    </div>
+                    <div class="buttons col s1 secondary-content">
+                        <i class="edit fa fa-pencil absolute top_padding"></i>
+                        <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s5">
+                        <div class="field_header">Last Name</div>
+                    </div>
+                    <div class="col s6 editable">
+                        <input id="lastName" type="text" class="user_input disabled" v-model="lastName">
+                    </div>
+                    <div class="buttons col s1 secondary-content">
+                        <i class="edit fa fa-pencil absolute top_padding"></i>
+                        <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s5">
+                        <div class="field_header">Nickname</div>
+                    </div>
+                    <div class="col s6 editable">
+                        <input id="nickname" type="text" class="user_input disabled" v-model="nickname">
+                    </div>
+                    <div class="buttons col s1 secondary-content">
+                        <i class="edit fa fa-pencil absolute top_padding"></i>
+                        <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s5">
+                        <div class="field_header">Telephone</div>
+                    </div>
+                    <div class="col s6 editable">
+                        <input id="telephone" type="text" class="user_input disabled" v-model="telephone">
+                    </div>
+                    <div class="buttons col s1 secondary-content">
+                        <i class="edit fa fa-pencil absolute top_padding"></i>
+                        <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s5">
+                        <div class="field_header">Email</div>
+                    </div>
+                    <div class="col s6 editable">
+                        <input id="last_name" type="text" class="user_input disabled" v-model="email">
+                    </div>
+                    <div class="buttons col s1 secondary-content">
+                        <i class="edit fa fa-pencil absolute top_padding"></i>
+                        <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="carousel-item grey white-text" href="#three!">
-            <h2>Organisation and Projet</h2>
-            <p class="white-text">This is your third panel</p>
+        <div class="section white">
+            <div class="profile_block z-depth-1">
+                <h2 class="header">Mes Clefs et Comptes</h2>
+            </div>
         </div>
+        <div class="section white">
+            <div class="profile_block z-depth-1">
+                <h2 class="header">Mes Orgas</h2>
+                <ul id="orga_list" class="overflow">
+                    <li class="squared_list" v-for="item in orgas">
+                        <div class="picture_mini">
+                            <img v-bind:src="item.url" class="square_picture absolute">
+                            <div class="picture_infos center-align black transparent_low center-align absolute" style="color:#b3e5fc">
+                                {{ item.name }}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
-        
-    </div>
+        <div class="section white">
+            <div class="profile_block z-depth-1 overflow">
+                <h2 class="header">Mes Projets</h2>
+                <ul id="projects_list" class="overflow">
+                    <li class="squared_list" v-for="item in orgas">
+                        <div class="picture_mini">
+                            <img v-bind:src="item.url" class="square_picture absolute">
+                            <div class="picture_infos center-align black transparent_low center-align absolute" style="color:#b3e5fc">
+                                {{ item.name }}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="parallax-container" id="lower_profile_div">
+            <div class="parallax centered background_pic" v-bind:style="cover_url">
+            </div>
+        </div>
         <div class="row">
             <router-link 
                 :to="{ name: 'profil' }">
@@ -70,18 +139,45 @@
 
         data: function () {
             return {
-                firstName: "Arthur",
-                lastName: "Ngo-van",
-                email: "aurthurNgo@gmail.vietnam",
-                phone: "6666666666",
+                firstName: "Aurline",
+                lastName: "Juidissi",
+                email: "aurelienlegrospd@jebaiseuneritale.com",
+                telephone: "0666666666",
                 image_view: null,
+                nickname: "La Petite pute",
+                cover_url: "http://maxcdn.thedesigninspiration.com/wp-content/uploads/2012/06/Facebook-Covers-040.jpg",
                 lat: 'null',
                 lng: 'null',
+                orgas: [
+                    {
+                        id: 1,
+                        name: "MSF",
+                        url: "https://pbs.twimg.com/profile_images/648421197844054016/wmrRb2GU.png",
+                    },
+                    {
+                        id: 2,
+                        name: "Humanis",
+                        url: "https://www.newsassurancespro.com/wp-content/uploads/2012/02/Humanis.jpg",
+                    },
+                    {
+                        id: 3,
+                        name: "Croix Rouge",
+                        url: "https://pbs.twimg.com/profile_images/779289835848818688/yifTHAJE.jpg",
+                    },
+                    {
+                        id: 4,
+                        name: "SOS Fantom",
+                        url: "https://upload.wikimedia.org/wikipedia/fr/thumb/1/1c/SOS_Fant%C3%B4mes_-_Logo.svg/langfr-220px-SOS_Fant%C3%B4mes_-_Logo.svg.png",
+                    },
+                ],
+
+
             }
         },
         mounted() {
             $('.carousel.carousel-slider').carousel({full_width: true});
-
+            $(".user_input").attr("disabled", true)
+            $(".parallax").parallax();
             if (navigator.geolocation) {
 
                 console.log("try goelocation");
@@ -90,10 +186,27 @@
                                              this.geolocationError,
                                              { enableHighAccuracy: true, dtimeout : 5000});
             }
+            console.log('edit')
+            $('.fa.fa-pencil').on('click', function() {
+                console.log("1")
+                $(this).parent().parent().children(".editable").children(".user_input").attr("disabled", false);
+                $(this).removeClass("visible").addClass("invisible");
+                $(this).parent().children(".save").removeClass("invisible").addClass("visible");
 
+            });
+            $('.fa.fa-floppy-o').on('click', function() {
+                console.log("2")
+                $(this).parent().parent().children(".editable").children(".user_input").attr("disabled", true);
+                $(this).removeClass("visible").addClass("invisible");
+                $(this).parent().children(".edit").removeClass("invisible").addClass("visible");
+            });
         },
 
         methods: {
+
+            editPersonalInfos() {
+                $("ul.level-2").children().css( "background-color", "red" );
+            },
 
             openCamera() {
                 navigator.camera.getPicture(onSuccess, onFail, { quality: 50,

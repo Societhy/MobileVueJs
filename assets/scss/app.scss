@@ -2,6 +2,202 @@
 @import "node_modules/materialize-css/sass/ghpages-materialize.scss";
 @import "node_modules/font-awesome/scss/font-awesome";
 
+html {
+  height: 100%;
+  width:100%;
+}
 body {
-  min-height: 100vh;
+  height: 100%;
+  width:100%;
+}
+#full_screen {
+  height: 100%;
+  width:100%;
+  position: relative; 
+}
+.full_screen {
+  height: 100%;
+  width: 100%;
+}
+#app{
+	height: 100%;
+	width:100%;
+}
+
+// PROFILE VUE
+
+.container {
+	width: 100%;
+	height: 100%;
+	margin-left: 0rem;
+	margin-right: 0rem;
+}
+
+.relative {
+	position: relative;
+}
+
+.absolute {
+	position: absolute;
+}
+
+#upper_profile_div {
+	height: 400px;
+	width: 100%;
+}
+
+#background_pic {
+	height: 500px;
+	width: 100%;
+	opacity: 1;
+}
+
+#lower_profile_div {
+	height: 450px;
+	width: 100%;
+}
+
+#profile_pic {
+	height: 100%;
+}
+
+#profile_div {
+	top: 60%;
+	height: 40%;
+	width: 100%;
+	z-index: 100;
+}
+
+#picture_div {
+	top: 0%;
+	left: 50%;
+	margin: -75px;
+	height: 150px;
+	width: 150px;
+	z-index: 100;
+}
+
+#camera_button {
+	top: 0%;
+	left: 50%;
+	margin-left: 47px;
+	margin-top: -47px;
+	height: 56px;
+	width: 56px;
+	z-index: 110;
+}
+
+#profile_infos {
+	margin-top: 80px;
+}
+
+.profile_block {
+	padding: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.picture_mini {
+	margin: 1em;
+	width: 100px;
+	height: 100px;
+}
+.picture_infos {
+	width: 100px;
+	height: 25px;
+	marging-top: 75px;
+}
+
+.square_picture {
+	width: 100px;
+	height: 100px;
+}
+
+#friends_search_input {
+	margin: 2px;
+	z-index: 6;
+	border-bottom: none;
+
+}
+
+.search_section {
+	height: 45px;
+    width: auto;
+    margin-left: 4px;
+    margin-right: 4px;
+    position: relative;
+}
+
+#user_search_button {
+	position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;	
+}
+
+.field_header {
+	height: 35px;
+	padding-top: 12px;
+	color: #b3e5ea;	
+}
+
+.field_header {
+	margin-top: 2px;
+}
+
+.top_padding {
+	margin-top: 12px;	
+}
+
+.squared_list {
+    width: 150px;
+    height: 150px;
+    float: left;
+}
+
+.profile_block .row {
+	margin-bottom: 0px
+}
+
+.profile_block {
+	padding: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+// UTILS
+
+.invisible {
+	visibility: hidden;
+	disabled: true;
+}
+
+.visible {
+	visibility: visible;
+	disabled: false;
+}
+
+.overflow {
+	overflow: auto;
+	width: 100%;
+}
+
+.transparent_low {
+	opacity: 0.7;
+}
+
+.transparent_med {
+	opacity: 0.5;
+}
+
+.no_fit {
+	object-fit: cover;
+	object-position: center;
+}
+
+
+.centered {
+	background-position: center center;
+	background-repeat: no-repeat;
+    background-size: auto 100%;
 }
