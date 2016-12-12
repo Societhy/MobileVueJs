@@ -87,8 +87,8 @@
         <div class="section white">
             <div class="profile_block z-depth-1">
                 <h2 class="header">Mes Clefs et Comptes</h2>
-                <ul>
-                    <li v-for="item in ethereum_keys">
+                <ul class="eth_tab">
+                    <li v-for="item in ethereum_keys" class="eth_row">
                         <div class="row">
                             <div class="col s9">
                                 {{ item.key }}
@@ -97,8 +97,17 @@
                                 {{ item.date }}
                             </div>
                             <div class="col s1">
-                                <i class="edit fa fa-pencil absolute top_padding"></i>
-                                <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                                <i class="delete fa fa-times"></i>
+                            </div>
+                        </div>
+                    </li>
+                    <li id="add_key_row">
+                        <div class="row">
+                            <div class="col s11">
+                                Generer une nouvelle clef Ethereum
+                            </div>
+                            <div class="col s1">
+                                <i class="add_key fa fa-plus"></i>
                             </div>
                         </div>
                     </li>
@@ -133,6 +142,26 @@
                         </div>
                     </li>
                 </ul>
+            </div>
+        </div>
+        <div id="key_delete" class="modal">
+            <div class="modal-content">
+                <h4>Supprimer une clef Ethereum</h4>
+                <p>Etes vous sur de vouloir supprimer votre clef? Elle est simpa pourtant, toute suppression de clef est definitive.</p>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-action modal-close waves-effect waves-green btn-flat">Disagree</a>
+                <a class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+            </div>
+        </div>
+        <div id="key_generate" class="modal">
+            <div class="modal-content">
+                <h4>Generer une clef Ethereum</h4>
+                <p>Etes vous sur de vouloir generer une clef? Tout ajout de clef est definitive.</p>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-action modal-close waves-effect waves-green btn-flat">Disagree</a>
+                <a class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
             </div>
         </div>
         <div class="parallax-container" id="lower_profile_div">
@@ -210,35 +239,14 @@
             }
         },
         mounted() {
-            $('.carousel.carousel-slider').carousel({full_width: true});
-            $(".user_input").attr("disabled", true)
-            $(".parallax").parallax();
-            if (navigator.geolocation) {
-
-                console.log("try goelocation");
-
-                navigator.geolocation.watchPosition(this.geolocationSuccess,
-                                             this.geolocationError,
-                                             { enableHighAccuracy: true, dtimeout : 5000});
-            }
-            console.log('edit')
-            $('.fa.fa-pencil').on('click', function() {
-                console.log("1")
-                $(this).parent().parent().children(".editable").children(".user_input").attr("disabled", false);
-                $(this).removeClass("visible").addClass("invisible");
-                $(this).parent().children(".save").removeClass("invisible").addClass("visible");
-
-            });
-            $('.fa.fa-floppy-o').on('click', function() {
-                console.log("2")
-                $(this).parent().parent().children(".editable").children(".user_input").attr("disabled", true);
-                $(this).removeClass("visible").addClass("invisible");
-                $(this).parent().children(".edit").removeClass("invisible").addClass("visible");
-            });
+            this.initGeolocation();
+            this.initMaterializeJavascript();
             this.getUserData();
+            this.initButtonRequests();
         },
 
         methods: {
+
 
             editPersonalInfos() {
                 $("ul.level-2").children().css( "background-color", "red" );
@@ -291,7 +299,57 @@
             },
 
             processUserData(response) {
-                this.firstName = resposne.first_name;
+                this.first_name = resposne.first_name;
+            },
+
+            // INITIALISATIONS
+
+            initGeolocation() {
+                if (navigator.geolocation) {
+
+                    console.log("try goelocation");
+
+                    navigator.geolocation.watchPosition(this.geolocationSuccess,
+                                                 this.geolocationError,
+                                                 { enableHighAccuracy: true, dtimeout : 5000});
+                }
+            },
+
+            initMaterializeJavascript() {
+                $('.carousel.carousel-slider').carousel({full_width: true});
+                $(".user_input").attr("disabled", true)
+                $(".parallax").parallax();
+                $('.modal').modal();
+            },
+
+            initButtonRequests() {
+                $('.delete').on('click', function() {
+
+
+                    // REQUEST TO DELETE KEY
+                    $("#key_delete").modal('open');
+
+                });
+                $('.add_key').on('click', function() {
+
+                    // REQUEST TO GENERATE KEY
+                    $("#key_generate").modal('open');
+
+                });
+
+                $('.fa.fa-pencil').on('click', function() {
+                    console.log("1")
+                    $(this).parent().parent().children(".editable").children(".user_input").attr("disabled", false);
+                    $(this).removeClass("visible").addClass("invisible");
+                    $(this).parent().children(".save").removeClass("invisible").addClass("visible");
+
+                });
+                $('.fa.fa-floppy-o').on('click', function() {
+                    console.log("2")
+                    $(this).parent().parent().children(".editable").children(".user_input").attr("disabled", true);
+                    $(this).removeClass("visible").addClass("invisible");
+                    $(this).parent().children(".edit").removeClass("invisible").addClass("visible");
+                });
             },
         }
     }
