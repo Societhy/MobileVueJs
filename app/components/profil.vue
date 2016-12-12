@@ -2,7 +2,7 @@
     <div class="container">
         <div id="upper_profile_div" class="parallax-container">
             <div class="parallax">
-                <img id="background_pic" class="centered no_fit" v-bind:src="cover_url">
+                <img id="background_pic" class="centered no_fit" v-bind:src="user_data.cover_url">
             </div>
             <div class="absolute" id="profile_div">
                 <div id="picture_div" class="absolute z-depth-5">
@@ -27,7 +27,7 @@
                         <div class="field_header">First Name</div>
                     </div>
                     <div class="col s6 editable">
-                        <input id="firstName" type="text" class="user_input disabled" v-model="firstName">
+                        <input id="firstName" type="text" class="user_input disabled" v-model="user_data.first_name">
                     </div>
                     <div class="buttons col s1 secondary-content">
                         <i class="edit fa fa-pencil absolute top_padding"></i>
@@ -39,7 +39,7 @@
                         <div class="field_header">Last Name</div>
                     </div>
                     <div class="col s6 editable">
-                        <input id="lastName" type="text" class="user_input disabled" v-model="lastName">
+                        <input id="lastName" type="text" class="user_input disabled" v-model="user_data.last_name">
                     </div>
                     <div class="buttons col s1 secondary-content">
                         <i class="edit fa fa-pencil absolute top_padding"></i>
@@ -51,7 +51,7 @@
                         <div class="field_header">Nickname</div>
                     </div>
                     <div class="col s6 editable">
-                        <input id="nickname" type="text" class="user_input disabled" v-model="nickname">
+                        <input id="nickname" type="text" class="user_input disabled" v-model="user_data.nickname">
                     </div>
                     <div class="buttons col s1 secondary-content">
                         <i class="edit fa fa-pencil absolute top_padding"></i>
@@ -63,7 +63,7 @@
                         <div class="field_header">Telephone</div>
                     </div>
                     <div class="col s6 editable">
-                        <input id="telephone" type="text" class="user_input disabled" v-model="telephone">
+                        <input id="telephone" type="text" class="user_input disabled" v-model="user_data.telephone">
                     </div>
                     <div class="buttons col s1 secondary-content">
                         <i class="edit fa fa-pencil absolute top_padding"></i>
@@ -75,7 +75,7 @@
                         <div class="field_header">Email</div>
                     </div>
                     <div class="col s6 editable">
-                        <input id="last_name" type="text" class="user_input disabled" v-model="email">
+                        <input id="last_name" type="text" class="user_input disabled" v-model="user_data.email">
                     </div>
                     <div class="buttons col s1 secondary-content">
                         <i class="edit fa fa-pencil absolute top_padding"></i>
@@ -139,13 +139,15 @@
 
         data: function () {
             return {
-                firstName: "Aurline",
-                lastName: "Juidissi",
-                email: "aurelienlegrospd@jebaiseuneritale.com",
-                telephone: "0666666666",
-                image_view: null,
-                nickname: "La Petite pute",
-                cover_url: "http://maxcdn.thedesigninspiration.com/wp-content/uploads/2012/06/Facebook-Covers-040.jpg",
+                user_data: {
+                    first_name: "Aurline",
+                    last_name: "Juidissi",
+                    email: "aurelienlegrospd@jebaiseuneritale.com",
+                    telephone: "0666666666",
+                    image_view: null,
+                    nickname: "La Petite pute",
+                    cover_url: "http://maxcdn.thedesigninspiration.com/wp-content/uploads/2012/06/Facebook-Covers-040.jpg",                    
+                },
                 lat: 'null',
                 lng: 'null',
                 orgas: [
@@ -200,6 +202,7 @@
                 $(this).removeClass("visible").addClass("invisible");
                 $(this).parent().children(".edit").removeClass("invisible").addClass("visible");
             });
+            this.getUserData();
         },
 
         methods: {
@@ -239,6 +242,23 @@
                 this.lat = position.coords.latitude
                 this.lng = position.coords.longitude
 
+            },
+
+            getUserData() {
+
+                console.log('before request')
+                this.$http({
+                    url: '',
+                    method: 'GET',
+                }).then(function (response) {
+                    this.processUserData(window.vue.getJSONData(response));
+                }, function (response) {
+                    console.log(response)
+                });
+            },
+
+            processUserData(response) {
+                this.firstName = resposne.first_name;
             },
         }
     }
