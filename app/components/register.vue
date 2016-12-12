@@ -14,25 +14,25 @@
                     <input id="last_name" type="text" class="validate" v-model="lastName">
                     <label for="last_name" class="left-align">Last name</label>
                 </div>
-                <div class="input-field col s10 offset-s1">
-                    <input id="login" type="text" class="validate" v-model="login">
-                    <label for="login" class="left-align">Login</label>
+                  <div class="input-field col s10 offset-s1">
+                    <input id="name" type="text" class="validate" v-model="name" required>
+                    <label for="name" class="left-align">Login</label>
                 </div>
                 <div class="input-field col s10 offset-s1">
-                    <input id="email" type="email" class="validate" v-model="email">
+                    <input id="email" type="email" class="validate" v-model="email" required>
                     <label for="email" class="left-align">E-mail</label>
                 </div>
                 <div class="input-field col s10 offset-s1">
-                    <input id="password" type="password" class="validate" v-model="password">
+                    <input id="password" type="password" class="validate" v-model="password" required>
                     <label for="password" class="left-align">Password</label>
                 </div>
                 <div class="input-field col s10 offset-s1">
-                    <input id="password_confirm" type="password" class="validate" v-model="password_confirm">
+                    <input id="password_confirm" type="password" class="validate" v-model="password_confirm" required>
                     <label for="password_confirm" class="left-align">Password confirm</label>
                 </div>
                 <div class="input-field col s0 offset-s1">
-                    <input id="EthereumPrivateKey" type="checkbox"  class="validate"  v-model="checked">
-                    <label for="EthereumPrivateKey" class="left-align">Generate a ethereum private key</label>
+                    <input id="ethereum_private_key" type="checkbox"  class="validate checked"  v-model="ethereum_private_key">
+                    <label for="ethereum_private_key" class="left-align">Generate a ethereum private key</label>
                 </div>
             </div>
             <div class="row">
@@ -55,13 +55,14 @@
 
         data: function () {
             return {
+                name: "",
                 firstName: "",
                 lastName: "",
                 login: "",
                 email: "",
                 password: "",
                 password_confirm: "",
-                EthereumPrivateKey: "",
+                ethereum_private_key: false,
             }
         },
 
@@ -71,17 +72,17 @@
 
         methods: {
             submitForm() {
-                this.router.go({ name: 'login', params : { }});
+
                 console.log('Test');
                 // POST request
                 var dataArray = {
+                    name: this.name,
                     firstname: this.firstName,
                     lastname: this.lastName,
-                    login: this.login,
                     email: this.email,
                     password: this.password,
                     password_confirm: this.password,
-                    EthereumPrivateKey: this.EthereumPrivateKey,
+                    eth: this.ethereum_private_key,
                     sex: "male",
                     grant_type: "password",
                     client_id: 1,
@@ -89,23 +90,19 @@
                     scope: '*',
                 };
 
-                this.$http({
-                    url: '/register',
+                this.$http(
+                {
+                    url: 'http://localhost:4242/newUser',
                     method: 'POST',
                     body: dataArray
                 }).then(function (response) {
-
-                    alert('Registered');
+                    alert("ça marche");
                     this.last_user = this.login;
-                    router.go({ name: 'login', params : { }});
-
+                    this.$router.push("/");
                 }, function (response) {
 
                     // error callback
-                    alert('Error');
-                    console.log(response);
                     alert(response.status);
-
                 });
 
 
@@ -113,7 +110,6 @@
             addValidation() {
 
             },
-
         }
     }
 </script>
