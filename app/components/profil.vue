@@ -87,6 +87,22 @@
         <div class="section white">
             <div class="profile_block z-depth-1">
                 <h2 class="header">Mes Clefs et Comptes</h2>
+                <ul>
+                    <li v-for="item in ethereum_keys">
+                        <div class="row">
+                            <div class="col s9">
+                                {{ item.key }}
+                            </div>
+                            <div class="col s2">
+                                {{ item.date }}
+                            </div>
+                            <div class="col s1">
+                                <i class="edit fa fa-pencil absolute top_padding"></i>
+                                <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="section white">
@@ -148,6 +164,23 @@
                     nickname: "La Petite pute",
                     cover_url: "http://maxcdn.thedesigninspiration.com/wp-content/uploads/2012/06/Facebook-Covers-040.jpg",                    
                 },
+                ethereum_keys: [
+                    {
+                        id: 1,
+                        key: "AA5dw76d8dv7tefb98b7ter8vwev9wb8etb8erb7v8wcer6w5qw8",
+                        date: "12/12/2016",
+                    },
+                    {
+                        id: 1,
+                        key: "AA5dw76d8dv7tefb98b7ter8vwev9wb8etb8erb7v8wcer6w5qw8",
+                        date: "12/12/2016",
+                    },
+                    {
+                        id: 1,
+                        key: "AA5dw76d8dv7tefb98b7ter8vwev9wb8etb8erb7v8wcer6w5qw8",
+                        date: "12/12/2016",
+                    },
+                ],
                 lat: 'null',
                 lng: 'null',
                 orgas: [
