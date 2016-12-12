@@ -79,7 +79,7 @@
                     </div>
                     <div class="buttons col s1 secondary-content">
                         <i class="edit fa fa-pencil absolute top_padding"></i>
-                        <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                        <a @click.prevent="saveAttribute("email")"><i class="save fa fa-floppy-o invisible absolute top_padding"></i></a>
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                                 {{ item.date }}
                             </div>
                             <div class="col s1">
-                                <i class="delete fa fa-times"></i>
+                                <a @click.prevent="deleteKeyDialog(item.id)"><i class="delete fa fa-times"></i></a>
                             </div>
                         </div>
                     </li>
@@ -107,7 +107,7 @@
                                 Generer une nouvelle clef Ethereum
                             </div>
                             <div class="col s1">
-                                <i class="add_key fa fa-plus"></i>
+                                <a @click.prevent="generateKeyDialog()"><i class="add_key fa fa-plus"></i></a>
                             </div>
                         </div>
                     </li>
@@ -130,7 +130,7 @@
             </div>
         </div>
         <div class="section white">
-            <div class="profile_block z-depth-1 overflow">
+            <div class="profile_block z-depth-1">
                 <h2 class="header">Mes Projets</h2>
                 <ul id="projects_list" class="overflow">
                     <li class="squared_list" v-for="item in orgas">
@@ -150,8 +150,8 @@
                 <p>Etes vous sur de vouloir supprimer votre clef? Elle est simpa pourtant, toute suppression de clef est definitive.</p>
             </div>
             <div class="modal-footer">
-                <a class="modal-action modal-close waves-effect waves-green btn-flat">Disagree</a>
-                <a class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                <a @click.prevent="deleteKey()" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                <a @click.prevent="dismissDialog('key_delete')" class="modal-action modal-close waves-effect waves-green btn-flat">Disagree</a>
             </div>
         </div>
         <div id="key_generate" class="modal">
@@ -160,8 +160,8 @@
                 <p>Etes vous sur de vouloir generer une clef? Tout ajout de clef est definitive.</p>
             </div>
             <div class="modal-footer">
-                <a class="modal-action modal-close waves-effect waves-green btn-flat">Disagree</a>
-                <a class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                <a @click.prevent="generateKey()" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                <a @click.prevent="dismissDialog('key_generate')" class="modal-action modal-close waves-effect waves-green btn-flat">Disagree</a>
             </div>
         </div>
         <div class="parallax-container" id="lower_profile_div">
@@ -235,6 +235,7 @@
                     },
                 ],
 
+                key_save: "",
 
             }
         },
@@ -270,19 +271,6 @@
                     alert('Failed because: ' + message);
                     console.log('error getting photo');
                 }
-
-            },
-
-            geolocationError () {
-                console.log('geolocation err');
-            },
-
-            geolocationSuccess(position) {
-                console.log('geolocation success');
-                console.log(position.coords.latitude)
-                this.lat = position.coords.latitude
-                this.lng = position.coords.longitude
-
             },
 
             getUserData() {
@@ -304,17 +292,6 @@
 
             // INITIALISATIONS
 
-            initGeolocation() {
-                if (navigator.geolocation) {
-
-                    console.log("try goelocation");
-
-                    navigator.geolocation.watchPosition(this.geolocationSuccess,
-                                                 this.geolocationError,
-                                                 { enableHighAccuracy: true, dtimeout : 5000});
-                }
-            },
-
             initMaterializeJavascript() {
                 $('.carousel.carousel-slider').carousel({full_width: true});
                 $(".user_input").attr("disabled", true)
@@ -323,20 +300,6 @@
             },
 
             initButtonRequests() {
-                $('.delete').on('click', function() {
-
-
-                    // REQUEST TO DELETE KEY
-                    $("#key_delete").modal('open');
-
-                });
-                $('.add_key').on('click', function() {
-
-                    // REQUEST TO GENERATE KEY
-                    $("#key_generate").modal('open');
-
-                });
-
                 $('.fa.fa-pencil').on('click', function() {
                     console.log("1")
                     $(this).parent().parent().children(".editable").children(".user_input").attr("disabled", false);
@@ -350,6 +313,59 @@
                     $(this).removeClass("visible").addClass("invisible");
                     $(this).parent().children(".edit").removeClass("invisible").addClass("visible");
                 });
+            },
+
+            saveAttribute(field) {
+            },
+
+            // ETHEREUM KEYS
+
+            deleteKeyDialog(id) {
+                this.key_save = id;
+                $("#key_delete").modal('open');
+            },
+
+            deleteKey() {
+                $("key_delete").modal('close')
+
+                // DELE KEY REQUEST OF this.key_save
+            },
+
+            generateKeyDialog() {
+                $("#key_generate").modal('open');
+            },
+
+            generateKey() {
+                $("#key_generate").modal('close');
+
+                // GENERATE KEY REQUEST
+            },
+
+            dismissDialog(id) {
+                $(id).modal('close')
+            },
+
+            initGeolocation() {
+                if (navigator.geolocation) {
+
+                    console.log("try goelocation");
+
+                    navigator.geolocation.watchPosition(this.geolocationSuccess,
+                                                 this.geolocationError,
+                                                 { enableHighAccuracy: true, dtimeout : 5000});
+                }
+            },
+
+            geolocationError () {
+                console.log('geolocation err');
+            },
+
+            geolocationSuccess(position) {
+                console.log('geolocation success');
+                console.log(position.coords.latitude)
+                this.lat = position.coords.latitude
+                this.lng = position.coords.longitude
+
             },
         }
     }
