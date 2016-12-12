@@ -47,10 +47,8 @@
 
         data: function () {
             return {
-
                 login: "",
                 password: "",
-
                 hasError: false,
             }
         },
@@ -82,12 +80,8 @@
                     console.log(response);
                     alert(response.status);
                 });
-
-
-
             },
             addValidation() {
-
         		console.log('toooo')
         	}
         }
