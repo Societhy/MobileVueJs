@@ -20,9 +20,9 @@
 	            </div>
 	        </div>
 	        <div class="row">
-                <router-link :to="{ name: 'profil' }" class="waves-effect waves-light btn">
+                <a @click="submitForm" class="waves-effect waves-light btn">
                     Sign In
-                </router-link>
+                </a>
 	            <!-- <a @click.prevent="submitForm" class="waves-effect waves-light btn">Sign In</a> -->
 	        </div>
 	        <div class="row">
@@ -35,6 +35,7 @@
 </template>
 
 <script type="text/babel">
+
     export default {
         name: 'login',
 
@@ -57,25 +58,21 @@
         methods: {
             submitForm() {
             	this.hasError = true;
-                console.log('Test');
 
             	var dataArray = {
-                    username: this.nickname,
-                    password: this.password,
-                    grant_type: "password",
-					client_id: 1,
-					client_secret: this.client_secret,
-					scope: '*',
+                    "id": btoa(this.login + ':' + this.password)
                 };
-
+                var url = 'http://localhost:4242/login';
+                  console.log(url);
                 this.$http({
-                    url: '/oauth/token',
+                    url: url,
                     method: 'POST',
                     body: dataArray
                 }).then(function (response) {
 
                     alert("connected");
                     this.auth_data = response;
+                    this.$router.push({ name: '/profil', params : {response}});
 
                 }, function (response) {
 

@@ -1,9 +1,13 @@
 import { Vue, router, store } from './boot/core'
 import App from './components/app.vue'
+import Vue from 'vue';
+
+
 
 
 // require('materialize-css/dist/js/materialize.js')
 // require('jquery-validation/dist/jquery.validate.js')
+
 
 new Vue({
     router,
