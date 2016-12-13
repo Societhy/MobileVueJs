@@ -26,6 +26,25 @@ body {
 
 // PROFILE VUE
 
+#add_key_row {
+	background-color: #a899f6;
+	padding: 6px;
+}
+.eth_tab {
+}
+
+.eth_row {
+	padding: 6px;
+}
+
+.eth_tab li:nth-child(odd) {
+	background-color: #d3d3d3;  
+}
+
+.eth_tab li:nth-child(even) {
+	background-color: #f6f6f6;  
+}
+
 .container {
 	width: 100%;
 	height: 100%;

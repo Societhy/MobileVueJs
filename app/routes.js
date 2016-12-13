@@ -13,6 +13,5 @@ export default [
         path: '/profil',
         name: 'profil',
         component: require('./components/profil.vue')
-    }
-
+    },
 ]
