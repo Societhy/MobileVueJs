@@ -43,7 +43,9 @@
                     </div>
                     <div class="buttons col s1 secondary-content">
                         <i class="edit fa fa-pencil absolute top_padding"></i>
-                        <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                        <a class="asave" @click.prevent="changeName">
+                             <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                        </a>
                     </div>
                 </div>
                 <div class="row">
@@ -156,12 +158,12 @@
         data: function () {
             return {
                 user_data: {
-                    first_name: "Aurline",
-                    last_name: "Juidissi",
-                    email: "aurelienlegrospd@jebaiseuneritale.com",
+                    first_name: "",
+                    last_name: "",
+                    email: "",
                     telephone: "0666666666",
                     image_view: null,
-                    nickname: "La Petite pute",
+                    nickname: "",
                     cover_url: "http://maxcdn.thedesigninspiration.com/wp-content/uploads/2012/06/Facebook-Covers-040.jpg",                    
                 },
                 ethereum_keys: [
@@ -226,14 +228,14 @@
                 console.log("1")
                 $(this).parent().parent().children(".editable").children(".user_input").attr("disabled", false);
                 $(this).removeClass("visible").addClass("invisible");
-                $(this).parent().children(".save").removeClass("invisible").addClass("visible");
+                $(this).parent().children(".asave").children(".save").removeClass("invisible").addClass("visible");
 
             });
             $('.fa.fa-floppy-o').on('click', function() {
                 console.log("2")
-                $(this).parent().parent().children(".editable").children(".user_input").attr("disabled", true);
+                $(this).parent().parent().parent().children(".editable").children(".user_input").attr("disabled", true);
                 $(this).removeClass("visible").addClass("invisible");
-                $(this).parent().children(".edit").removeClass("invisible").addClass("visible");
+                $(this).parent().parent().children(".edit").removeClass("invisible").addClass("visible");
             });
             this.getUserData();
         },
@@ -274,25 +276,62 @@
                 console.log(position.coords.latitude)
                 this.lat = position.coords.latitude
                 this.lng = position.coords.longitude
-
             },
 
             getUserData() {
-
+                this.processUserData();
+                /*
                 console.log('before request')
                 this.$http({
-                    url: '',
+                    url: 'http://localhost:4242/',
                     method: 'GET',
                 }).then(function (response) {
                     this.processUserData(window.vue.getJSONData(response));
                 }, function (response) {
                     console.log(response)
-                });
+                }); */
             },
 
-            processUserData(response) {
-                this.firstName = resposne.first_name;
+            processUserData() {
+                this.profil_data = this.auth_data;
+                this.user_data.first_name = this.profil_data.user.firstname;
+                this.user_data.last_name = this.profil_data.user.lastname;
+                this.user_data.email = this.profil_data.user.email;
+                //this.user_data.telephone = this.auth_data.user.phone;
+                this.user_data.nickname = this.profil_data.user.name;
+                this.ethereum_keys[0].key = this.profil_data.user.eth.mainKey;
             },
+
+            changeName() {
+                console.log(this.user_data.last_name);
+
+                if (this.profil_data.user.lastname != this.user_data.last_name) {
+                    console.log("rentre dans ta chatte");
+                    var dataArray = {
+                        "lastname" : this.profil_data.user.last_name,
+                     };
+                    console.log(this.profil_data.token);
+                     var header = {
+                           "authentification" : this.profil_data.token,
+                    }
+                    var url = 'http://localhost:4242/updateUser';
+                this.$http({
+                    url: url,
+                    header : header,
+                    method: 'POST',
+                    body: dataArray
+                }).then(function (response) {
+                 
+                }, function (response) {
+
+                    this.hasError = true;
+                    // error callback
+                   //alert(response.data);
+                  // console.log(response);
+                   //alert(response.status);
+                });
+                }
+            }
         }
     }
 </script>

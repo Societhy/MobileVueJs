@@ -5,8 +5,8 @@ import App from './components/app.vue'
 // require('materialize-css/dist/js/materialize.js')
 // require('jquery-validation/dist/jquery.validate.js')
 
-new Vue({
-    router,
+var vm = new Vue({
+    router : router,
     el: '#app',
     render: h => h(App),
     data: { store },
@@ -16,12 +16,12 @@ new Vue({
             if (this.isPhoneGap()) {
                 console.log("PJSON: " + json.data)
                 console.log("PJSON: " + json.data.toString())
-                return json.data;
+                return json.user;
             }
             else {
                 console.log("BJSON: " + JSON.parse(json.data))
                 console.log("BJSON: " + JSON.parse(json.data).toString())
-                return JSON.parse(json.data);
+                return JSON.parse(json.user);
             }
         },
 
@@ -32,3 +32,5 @@ new Vue({
         },
     }
 })
+
+window.vue = vm;

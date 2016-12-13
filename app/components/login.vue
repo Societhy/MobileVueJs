@@ -67,10 +67,8 @@
                     method: 'POST',
                     body: dataArray
                 }).then(function (response) {
-
-                    alert("connected");
-                    this.auth_data = response;
-                    this.$router.push({ name: '/profil', params : {response}});
+                    this.auth_data = response.data;
+                    this.$router.push('/profil');
 
                 }, function (response) {
 
