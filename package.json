@@ -25,5 +25,8 @@
     "vue-stash": "^2.0.0-beta",
     "vue-validator": "^2.1.7",
     "vueify": "^9.2.4"
+  },
+  "dependencies": {
+    "vue-cookie": "^1.1.3"
   }
 }

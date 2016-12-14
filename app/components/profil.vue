@@ -308,27 +308,30 @@
                 if (this.profil_data.user.lastname != this.user_data.last_name) {
                     console.log("rentre dans ta chatte");
                     var dataArray = {
-                        "lastname" : this.profil_data.user.last_name,
+                        'lastname' : this.profil_data.user.last_name,
                      };
                     console.log(this.profil_data.token);
+                 //   console.log(this.resp_header['set-cookie']);
                      var header = {
-                           "authentification" : this.profil_data.token,
+                           'authentification' : this.profil_data.token,
+            //               'cookie' : this.resp_header['set-cookie']
                     }
                     var url = 'http://localhost:4242/updateUser';
                 this.$http({
                     url: url,
-                    header : header,
+                    headers : header,
                     method: 'POST',
                     body: dataArray
                 }).then(function (response) {
-                 
+                 console.log(response);
+                 alert(response.data);
                 }, function (response) {
 
                     this.hasError = true;
                     // error callback
-                   //alert(response.data);
-                  // console.log(response);
-                   //alert(response.status);
+                   alert(response.data);
+                  	console.log(response);
+                   alert(response.status);
                 });
                 }
             }

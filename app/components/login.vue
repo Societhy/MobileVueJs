@@ -67,6 +67,11 @@
                     method: 'POST',
                     body: dataArray
                 }).then(function (response) {
+                    console.log(response);
+                    this.resp_header = response.headers;
+                    console.log(this.resp_header);
+                   // console.log("-----------------------");
+                   // console.log(this.resp_header.data);
                     this.auth_data = response.data;
                     this.$router.push('/profil');
 

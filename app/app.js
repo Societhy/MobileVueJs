@@ -5,6 +5,12 @@ import App from './components/app.vue'
 // require('materialize-css/dist/js/materialize.js')
 // require('jquery-validation/dist/jquery.validate.js')
 
+var Vue = require('vue');
+var VueCookie = require('vue-cookie');
+// Tell Vue to use the plugin
+Vue.use(VueCookie);
+
+
 var vm = new Vue({
     router : router,
     el: '#app',
