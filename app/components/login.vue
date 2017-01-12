@@ -57,6 +57,7 @@
             submitForm() {
             	this.hasError = true;
 
+                this.$router.push('/profil');
             	var dataArray = {
                     "id": btoa(this.login + ':' + this.password)
                 };

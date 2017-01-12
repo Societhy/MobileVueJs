@@ -6,7 +6,7 @@
             </div>
             <div class="absolute" id="profile_div">
                 <div id="picture_div" class="absolute z-depth-5">
-                    <img id="profile_pic" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" alt="" class="square responsive-img centered">
+                    <img id="profile_pic" v-bind:src="user_data.image_view" alt="" class="square responsive-img centered">
                     <a @click.prevent="openCamera" id="camera_button" class="btn-floating btn-large waves-effect waves-light red">
                         <i class="fa fa-camera-retro"></i>
                     </a>
@@ -158,12 +158,12 @@
         data: function () {
             return {
                 user_data: {
-                    first_name: "",
-                    last_name: "",
-                    email: "",
+                    first_name: "Arthur",
+                    last_name: "Ngo Van",
+                    email: "arthur.ngovan@gmail.com",
                     telephone: "0666666666",
-                    image_view: null,
-                    nickname: "",
+                    image_view: "https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg",
+                    nickname: "Yasker",
                     cover_url: "http://maxcdn.thedesigninspiration.com/wp-content/uploads/2012/06/Facebook-Covers-040.jpg",                    
                 },
                 ethereum_keys: [
@@ -254,9 +254,9 @@
 
                 function onSuccess(imageData) {
 
-                    console.log('success getting photo');
-                    self.image_view = imageData;
-                    $("#image").rotate(-90)
+                    var image = document.getElementById('image');
+                    image.src = "data:image/jpeg;base64," + imageData;
+                    image.rotate(-90)
                 }
 
                 function onFail(message) {
@@ -274,6 +274,7 @@
             geolocationSuccess(position) {
                 console.log('geolocation success');
                 console.log(position.coords.latitude)
+                console.log(position.coords.longitude)
                 this.lat = position.coords.latitude
                 this.lng = position.coords.longitude
             },
