@@ -30,7 +30,13 @@ body {
 	background-color: #a899f6;
 	padding: 6px;
 }
-.eth_tab {
+
+.eth_tab li:nth-child(odd) {
+	background-color: #eeeeee;
+}
+
+.eth_tab li:nth-child(even) {
+	background-color: #cccccc;
 }
 
 .eth_row {
@@ -216,4 +222,91 @@ body {
 	background-position: center center;
 	background-repeat: no-repeat;
     background-size: auto 100%;
+}
+
+
+
+
+
+
+.search_section {
+	opacity: 0.7;
+}
+
+/*
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    custom_search_bar
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+.search_section {
+	height: 45px;
+    width: 100%;
+    border-radius: 2px;
+    visibility: inherit;
+	border-bottom: none;
+    background-color: #eeeeee;
+}
+
+.select_input {
+	height: 45px;
+	margin: 0px;
+	width: 90%;
+}
+
+.close_button {
+	left: 90%;
+	width: 5%;
+    font-size: 1.3rem;
+    margin-top: 10px;
+	visibility: inherit;
+	float: right;
+}
+
+.close_button a {
+	visibility: inherit;
+}
+
+.select_avatar {
+	height: 35px;
+	width: 35px;
+	object-fit: cover;
+}
+
+.selected_results {
+	margin-top: 5px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	display: inline;
+
+}
+
+.selected_results li {
+	display: inline;
+	margin-right: 4px;
+}
+
+.selected_item {
+	border-radius: 6px;
+	margin-left: 1px;
+	margin-right: 1px;
+    background-color: #666666;
+    display: inline;
+}
+
+.search_results {
+	width: 100%;
+	margin-top: 24px;
+    border-radius: 2px;
+}
+
+
+.little_top_padding {
+	padding-top: 3px;
+}
+
+.float {
+	float: left;
 }

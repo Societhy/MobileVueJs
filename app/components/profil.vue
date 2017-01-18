@@ -59,7 +59,7 @@
                     </div>
                     <div class="buttons col s1 secondary-content">
                         <i class="edit fa fa-pencil absolute top_padding"></i>
-                       <a class="asave" @click.prevent="nickNameChange">
+                        <a class="asave" @click.prevent="nickNameChange">
                              <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
                         </a>
                     </div>
@@ -95,7 +95,7 @@
         <div class="section white">
             <div class="profile_block z-depth-1">
                 <h2 class="header">Mes Clefs et Comptes</h2>
-                <ul>
+                <ul class="eth_tab">
                     <li v-for="item in ethereum_keys">
                         <div class="row">
                             <div class="col s9">
@@ -105,8 +105,8 @@
                                 {{ item.date }}
                             </div>
                             <div class="col s1">
-                                <i class="edit fa fa-pencil absolute top_padding"></i>
-                                <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                                <i class="edit fa fa-pencil absolute little_top_padding"></i>
+                                <i class="save fa fa-floppy-o invisible absolute little_top_padding"></i>
                             </div>
                         </div>
                     </li>
@@ -116,9 +116,40 @@
         <div class="section white">
             <div class="profile_block z-depth-1">
                 <h2 class="header">Mes Orgas</h2>
+                <div id="orgas_search">
+                    <div class="search_section">
+                        <div class="float">
+                            <ul class="selected_results">
+<!--                                 <li v-for="orga in select_selected.users" class="collection-item avatar">
+                                    <div class="selected_item">
+                                        <img class="select_avatar circle" v-bind:src="user.url" alt="">
+                                        {{ user.name }}
+                                        <a @click.prevent="deleteSelectedElem(user)"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </li> -->
+                            </ul>                        
+                        </div>
+                        <div class="float select_input">
+                            <input class="" v-model="select_input" @input="onInput"/>                        
+                        </div>
+                        <div class="close_button">
+                            <a class="visible" @click.prevent="closeSearchSection()"><i class="fa fa-times"></i></a>
+                        </div>                
+                    </div>
+                    <div class="search_results">
+                        <ul id="selection_results">
+                            <li v-for="orga in select_orgas" class="collection-item avatar">
+                                <div @click.prevent="selectOrgas(orga)">
+                                    <img class="select_avatar" v-bind:src="orga.url" alt="">
+                                    {{ orga.name }}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <ul id="orga_list" class="overflow">
                     <li class="squared_list" v-for="item in orgas">
-                        <div class="picture_mini">
+                        <div class="picture_mini" @click.prevent="selectOrgas(orga)">
                             <img v-bind:src="item.url" class="square_picture absolute">
                             <div class="picture_infos center-align black transparent_low center-align absolute" style="color:#b3e5fc">
                                 {{ item.name }}
@@ -159,7 +190,7 @@
  export default {
         name: 'profil',
 
-        store: ['message', 'auth_data', 'client_secret'],
+        store: ['message', 'auth_data', 'client_secret', 'fake'],
 
         data: function () {
             return {
@@ -213,6 +244,8 @@
                         url: "https://upload.wikimedia.org/wikipedia/fr/thumb/1/1c/SOS_Fant%C3%B4mes_-_Logo.svg/langfr-220px-SOS_Fant%C3%B4mes_-_Logo.svg.png",
                     },
                 ],
+                select_orgas: [],
+                select_projects: [],
 
 
             }
@@ -247,6 +280,47 @@
         },
 
         methods: {
+
+
+            /*
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                Search section
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            */
+
+            onInput() {
+                console.log('yyy')
+                this.select_orgas = this.fake.orgas;
+                this.select_projects = this.fake.projects;
+            },
+
+            selectOrgas(orga) {
+                this.select_orgas = []
+                this.select_input = ''
+
+                this.$router.push('/orgaProfil'); 
+            },
+
+            deleteSelectedElem(user) {
+                console.log('lalala' + user.id)
+                for (var i = 0; i < this.select_selected.users.length; ++i) {
+                    if (this.select_selected.users[i].id == user.id) {
+                console.log('lalalaoooo')
+                        this.select_selected.users.splice(i, 1)
+                        return;
+                    }
+                }
+            },
+
+            closeSearchSection() {
+                this.select_orgas = []
+                this.select_projects = []
+                this.select_input = ''
+            },
+            
+            ///////////////
 
             editPersonalInfos() {
                 $("ul.level-2").children().css( "background-color", "red" );
