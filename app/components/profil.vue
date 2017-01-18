@@ -31,7 +31,9 @@
                     </div>
                     <div class="buttons col s1 secondary-content">
                         <i class="edit fa fa-pencil absolute top_padding"></i>
-                        <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                        <a class="asave" @click.prevent="firstNameChange">
+                             <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                        </a>
                     </div>
                 </div>
                 <div class="row">
@@ -43,7 +45,7 @@
                     </div>
                     <div class="buttons col s1 secondary-content">
                         <i class="edit fa fa-pencil absolute top_padding"></i>
-                        <a class="asave" @click.prevent="changeName">
+                        <a class="asave" @click.prevent="lastNameChange">
                              <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
                         </a>
                     </div>
@@ -57,7 +59,9 @@
                     </div>
                     <div class="buttons col s1 secondary-content">
                         <i class="edit fa fa-pencil absolute top_padding"></i>
-                        <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                       <a class="asave" @click.prevent="nickNameChange">
+                             <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                        </a>
                     </div>
                 </div>
                 <div class="row">
@@ -81,7 +85,9 @@
                     </div>
                     <div class="buttons col s1 secondary-content">
                         <i class="edit fa fa-pencil absolute top_padding"></i>
-                        <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                         <a class="asave" @click.prevent="emailChange">
+                             <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -293,7 +299,9 @@
             },
 
             processUserData() {
-                this.profil_data = this.auth_data;
+               this.profil_data = this.auth_data;
+               console.log("dans profile -------");
+                console.log(this.auth_data);
                 this.user_data.first_name = this.profil_data.user.firstname;
                 this.user_data.last_name = this.profil_data.user.lastname;
                 this.user_data.email = this.profil_data.user.email;
@@ -302,38 +310,71 @@
                 this.ethereum_keys[0].key = this.profil_data.user.eth.mainKey;
             },
 
-            changeName() {
-                console.log(this.user_data.last_name);
-
+            lastNameChange() {
                 if (this.profil_data.user.lastname != this.user_data.last_name) {
-                    console.log("rentre dans ta chatte");
                     var dataArray = {
-                        'lastname' : this.profil_data.user.last_name,
+                        '_id' : this.profil_data.user._id,
+                        'lastname' : this.user_data.last_name,
                      };
-                    console.log(this.profil_data.token);
-                 //   console.log(this.resp_header['set-cookie']);
-                     var header = {
-                           'authentification' : this.profil_data.token,
-            //               'cookie' : this.resp_header['set-cookie']
-                    }
-                    var url = 'http://localhost:4242/updateUser';
-                this.$http({
-                    url: url,
-                    headers : header,
-                    method: 'POST',
-                    body: dataArray
-                }).then(function (response) {
-                 console.log(response);
-                 alert(response.data);
-                }, function (response) {
-
-                    this.hasError = true;
-                    // error callback
-                   alert(response.data);
-                  	console.log(response);
-                   alert(response.status);
-                });
+                    this.changeName(dataArray);
                 }
+            },
+
+            firstNameChange() {
+                if (this.profil_data.user.firstname != this.user_data.first_name) {
+                    var dataArray = {
+                        '_id' : this.profil_data.user._id,
+                        'firstname' : this.user_data.first_name,
+                     };
+                    this.changeName(dataArray);
+                }
+            },
+
+             emailChange() {
+                if (this.profil_data.user.email != this.user_data.email) {
+                     var dataArray = {
+                        '_id' : this.profil_data.user._id,
+                        'email' : this.user_data.email,
+                     };
+                     this.changeName(dataArray);
+                }
+            },
+
+            nickNameChange() {
+                if (this.profil_data.user.name != this.user_data.nickname) {
+                    var dataArray = {
+                        '_id' : this.profil_data.user._id,
+                        'name' : this.user_data.nickname,
+                     };
+                    this.changeName(dataArray);
+                }
+            },
+
+            changeName(dataArray) {
+                console.log(dataArray);
+                var header = {
+                           'authentification' : this.profil_data.token,
+                }
+                var url = 'http://localhost:4242/updateUser';
+                var authorizationToken = this.profil_data.token;
+            var xhr = $.ajax({
+                url: url,
+                dataType : "json",
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                xhrFields: { withCredentials: true },
+                crossDomain: true,
+                data: JSON.stringify(dataArray),
+                beforeSend: function(request) {
+                    request.setRequestHeader("Authentification", authorizationToken);
+                },
+        success: function(output, status, xhr) {
+            },
+        error : function(resultat, statut, erreur){
+
+            },
+            cache: false
+        });
             }
         }
     }

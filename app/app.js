@@ -36,6 +36,10 @@ var vm = new Vue({
             && /^file:\/{3}[^\/]/i.test(window.location.href) 
             && /ios|iphone|ipod|ipad|android/i.test(navigator.userAgent);
         },
+
+        setAuthData(_auth_data) {
+            this.auth_data = _auth_data;
+        },
     }
 })
 

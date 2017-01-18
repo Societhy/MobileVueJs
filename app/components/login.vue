@@ -30,6 +30,7 @@
 	                Register
 	            </router-link>
 	        </div>
+            <div id="example" data-info=""></div>
         </form>
     </div>
 </template>
@@ -42,7 +43,6 @@
         store: ['message', 'auth_data', 'client_secret'],
 
         mounted() {
-        	this.addValidation()
         },
 
         data: function () {
@@ -55,38 +55,40 @@
 
         methods: {
             submitForm() {
-            	this.hasError = true;
+                this.auth_data = this.callAjax();
+                console.log(this.auth_data);
+                this.nextPage();
+        },
 
-            	var dataArray = {
+        callAjax() {
+            var dataArray = {
                     "id": btoa(this.login + ':' + this.password)
                 };
-                var url = 'http://localhost:4242/login';
-                  console.log(url);
-                this.$http({
-                    url: url,
-                    method: 'POST',
-                    body: dataArray
-                }).then(function (response) {
-                    console.log(response);
-                    this.resp_header = response.headers;
-                    console.log(this.resp_header);
-                   // console.log("-----------------------");
-                   // console.log(this.resp_header.data);
-                    this.auth_data = response.data;
-                    this.$router.push('/profil');
-
-                }, function (response) {
-
-            		this.hasError = true;
-                    // error callback
-                    alert(response.data);
-                    console.log(response);
-                    alert(response.status);
-                });
+            var res = "";
+            var url = 'http://localhost:4242/login';
+            var xhr = $.ajax({
+                url: url,
+                async: false,
+                dataType : "json",
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                xhrFields: { withCredentials: true },
+                crossDomain: true,
+                data: JSON.stringify(dataArray),
+        success: function(output, status, xhr) {
+                res = output;
             },
-            addValidation() {
-        		console.log('toooo')
-        	}
+        error : function(resultat, statut, erreur){
+
+            },
+            cache: false
+        });
+            return res;
+        },
+
+        nextPage() {
+            this.$router.push('/profil'); 
         }
     }
+}
 </script>
