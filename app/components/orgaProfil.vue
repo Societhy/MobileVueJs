@@ -122,6 +122,11 @@
         <div class="section white">
             <div class="profile_block z-depth-1">
                 <h2 class="header">User in our organisation</h2>
+
+                <searchsection
+                    v-on:fetch="openItem"
+                        :contacts="fake.users">
+                </searchsection>
                 <ul id="orga_list" class="overflow">
                     <li class="squared_list" v-for="item in orgas">
                         <div class="picture_mini">
@@ -137,6 +142,10 @@
         <div class="section white">
             <div class="profile_block z-depth-1 overflow">
                 <h2 class="header">Our Projects</h2>
+                <searchsection
+                    v-on:fetch="openItem"
+                        :contacts="fake.orgas">
+                </searchsection>
                 <ul id="projects_list" class="overflow">
                     <li class="squared_list" v-for="item in orgas">
                         <div class="picture_mini">
@@ -165,7 +174,7 @@
  export default {
         name: 'orgaProfil',
 
-         store: ['message', 'auth_data', 'client_secret', 'profil_data'],
+         store: ['message', 'auth_data', 'client_secret', 'profil_data', 'fake'],
 
         data: function () {
             return {
@@ -223,6 +232,11 @@
 
             }
         },
+
+        components: {
+            "searchsection": require('./search/search_section.vue'),
+        },  
+
         mounted() {
             var dataArrayget = {
                 "id" : "58b61f66faf470006d0b8fd7",
@@ -343,6 +357,9 @@
                 });
             },
 
+            openItem(item) {
+
+            },
 
         }
     }

@@ -84,6 +84,25 @@
             cache: false
         });
             return res;
+
+            // var dataArray = {
+            //         "id": btoa(this.login + ':' + this.password)
+            //     };
+            // var url = 'http://localhost:4242/login';
+
+            // window.vue.ajaxRequest('POST', url, dataArray, this.success, this.error)
+        },
+
+        success(output, status, xhr) {
+            console.log('SUCCESS: log in')
+            this.auth_data = output
+        },
+
+        error(resultat, status, error) {
+            console.log('ERROR: log in')
+            console.log(resultat)
+            console.log(status)
+            console.log(error)
         },
 
         nextPage() {

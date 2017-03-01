@@ -31,6 +31,31 @@ var vm = new Vue({
             }
         },
 
+        ajaxRequest(type, route, params, success, error) {
+            var res = "";
+            var url = 'http://localhost:4242/login';
+            var xhr = $.ajax({
+                url: route,
+                async: false,
+                dataType : "json",
+                type: type,
+                contentType: "application/json; charset=utf-8",
+                xhrFields: { withCredentials: true },
+                crossDomain: true,
+                data: JSON.stringify(params),
+                beforeSend: setAuthToken,
+                success: success,
+                error: error,
+                cache: false,
+            })
+        },
+
+        setAuthToken(request) {
+            if (this.store.auth_data != null) {
+                request.setRequestHeader("Authentification", this.store.auth_data.token);
+            }
+        },
+
         isPhoneGap() {
             return (window.cordova || window.PhoneGap || window.phonegap) 
             && /^file:\/{3}[^\/]/i.test(window.location.href) 
@@ -38,7 +63,7 @@ var vm = new Vue({
         },
 
         setAuthData(_auth_data) {
-            this.auth_data = _auth_data;
+            this.store.auth_data = _auth_data;
         },
     }
 })
