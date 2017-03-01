@@ -213,8 +213,6 @@
                         url: "https://upload.wikimedia.org/wikipedia/fr/thumb/1/1c/SOS_Fant%C3%B4mes_-_Logo.svg/langfr-220px-SOS_Fant%C3%B4mes_-_Logo.svg.png",
                     },
                 ],
-
-
             }
         },
         mounted() {
@@ -377,6 +375,9 @@
             cache: false
         });
             }
-        }
+        },
+    ready() {
+        this.processUserData();
+    }
     }
 </script>

@@ -22,6 +22,12 @@
         <div class="section white">
             <div class="profile_block z-depth-3">
                 <h2 class="header">Organisation Information</h2>
+                <div class="row" align="right">
+                    <a @click="clickJoin" class="waves-effect waves-light btn">
+                        Join
+                    </a>
+                <!-- <a @click.prevent="submitForm" class="waves-effect waves-light btn">Sign In</a> -->
+                </div>
                 <div class="row">
                     <div class="col s5">
                         <div class="field_header">Name</div>
@@ -159,12 +165,12 @@
  export default {
         name: 'orgaProfil',
 
-        store: ['message', 'auth_data', 'client_secret'],
+         store: ['message', 'auth_data', 'client_secret', 'profil_data'],
 
         data: function () {
             return {
                 user_data: {
-                    name: "SuperOrgaSociethy",
+                    name: "Societhy",
                     category: "ONG",
                     email: "SuperOrgaS@gmail.com",
                     phone: "0706070607",
@@ -218,6 +224,126 @@
             }
         },
         mounted() {
+            var dataArrayget = {
+                "id" : "58b61f66faf470006d0b8fd7",
+                "password" : "simon",
+            };
+            console.log(this.auth_data.token);
+            this.getOrgaDocument(dataArrayget);
+            //this.getOrgaMemberList(dataArray);
+            //this.leaveOrga(dataArrayJoin);
+
+        },
+        methods: {
+            clickJoin(){
+                    var dataArrayJoin = {
+                    "orga_id" : "58b61f66faf470006d0b8fd7",
+                    "password" : "simon",
+                    "tag" : "member"
+                };
+                this.joinOrga(dataArrayJoin);
+            },
+
+            joinOrga(dataArray) {
+                console.log(dataArray);
+                var url = 'http://localhost:4242/joinOrga';
+                var authorizationToken = this.auth_data.token;
+                var xhr = $.ajax({
+                url: url,
+                dataType : "json",
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                xhrFields: { withCredentials: true },
+                crossDomain: true,
+                data: JSON.stringify(dataArray),
+                beforeSend: function(request) {
+                    request.setRequestHeader("Authentification", authorizationToken);
+                },
+                    success: function(output, status, xhr) {
+                },
+                    error : function(resultat, statut, erreur){
+
+                },
+                    cache: false
+                });
+            },
+
+            leaveOrga(dataArray) {
+                console.log(dataArray);
+                var url = 'http://localhost:4242/leaveOrga';
+                var authorizationToken = this.auth_data.token;
+                var xhr = $.ajax({
+                url: url,
+                dataType : "json",
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                xhrFields: { withCredentials: true },
+                crossDomain: true,
+                data: JSON.stringify(dataArray),
+                beforeSend: function(request) {
+                    request.setRequestHeader("Authentification", authorizationToken);
+                },
+                    success: function(output, status, xhr) {
+                },
+                    error : function(resultat, statut, erreur){
+
+                },
+                    cache: false
+                });
+            },
+
+            getOrgaDocument(dataArray)
+            {
+                console.log(dataArray);
+                var url = 'http://localhost:4242/getOrganization';
+                var authorizationToken = this.auth_data.token;
+                var xhr = $.ajax({
+                url: url,
+                dataType : "json",
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                xhrFields: { withCredentials: true },
+                crossDomain: true,
+                data: JSON.stringify(dataArray),
+                beforeSend: function(request) {
+                    request.setRequestHeader("Authentification", authorizationToken);
+                },
+                    success: function(output, status, xhr) {
+                },
+                    error : function(resultat, statut, erreur){
+
+                },
+                    cache: false
+                });
+            },
+
+            getOrgaMemberList(dataArray)
+            {
+                console.log(dataArray);
+                var url = 'http://localhost:4242/getOrgaMemberList/' + this.auth_data.token.replace('|', '.') + '/' + dataArray.id;
+                console.log(url);
+                var authorizationToken = this.auth_data.token;
+                var xhr = $.ajax({
+                url: url,
+                dataType : "json",
+                type: 'GET',
+                contentType: "application/json; charset=utf-8",
+                xhrFields: { withCredentials: true },
+                crossDomain: true,
+                data: JSON.stringify(dataArray),
+                beforeSend: function(request) {
+                    request.setRequestHeader("Authentification", authorizationToken);
+                },
+                    success: function(output, status, xhr) {
+                },
+                    error : function(resultat, statut, erreur){
+
+                },
+                    cache: false
+                });
+            },
+
+
         }
     }
 </script>
