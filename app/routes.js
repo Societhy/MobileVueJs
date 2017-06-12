@@ -1,3 +1,7 @@
+  /**
+  * Managment of the route
+  * @module App Route
+  */
 export default [
     {
         path: '/',

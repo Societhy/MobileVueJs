@@ -1,9 +1,9 @@
 <template>
     <div class="container">
-    <div class="row center-align">
-        <h2 class="blue-text col s12">Societhy</h2>
-        <h4 class="blue-text col s12 flow-text">Registration page</h4>
-    </div>
+        <div class="row center-align">
+            <h2 class="blue-text col s12">Societhy</h2>
+            <h4 class="blue-text col s12 flow-text">Registration page</h4>
+        </div>
         <form class="col s12 center-align">
             <div class="row">
                 <div class="input-field col s5 offset-s1">
@@ -14,7 +14,7 @@
                     <input id="last_name" type="text" class="validate" v-model="lastName">
                     <label for="last_name" class="left-align">Last name</label>
                 </div>
-                  <div class="input-field col s10 offset-s1">
+                <div class="input-field col s10 offset-s1">
                     <input id="name" type="text" class="validate" v-model="name" required>
                     <label for="name" class="left-align">Login</label>
                 </div>
@@ -31,7 +31,7 @@
                     <label for="password_confirm" class="left-align">Password confirm</label>
                 </div>
                 <div class="input-field col s0 offset-s1">
-                    <input id="ethereum_private_key" type="checkbox"  class="validate checked"  v-model="ethereum_private_key">
+                    <input id="ethereum_private_key" type="checkbox" class="validate checked" v-model="ethereum_private_key">
                     <label for="ethereum_private_key" class="left-align">Generate a ethereum private key</label>
                 </div>
             </div>
@@ -48,68 +48,77 @@
 </template>
 
 <script type="text/babel">
-    export default {
-        name: 'register',
+export default {
+       name: 'register',
 
-        store: ['message', 'last_user', 'client_secret'],
+       store: ['message', 'last_user', 'client_secret'],
 
-        data: function () {
-            return {
-                name: "",
-                firstName: "",
-                lastName: "",
-                login: "",
-                email: "",
-                password: "",
-                password_confirm: "",
-                ethereum_private_key: false,
-            }
-        },
+       data: function() {
+           return {
+               name: "",
+               firstName: "",
+               lastName: "",
+               login: "",
+               email: "",
+               password: "",
+               password_confirm: "",
+               ethereum_private_key: false,
+           }
+       },
 
-        mounted() {
+       mounted() {
 
-        },
+       },
 
-        methods: {
-            submitForm() {
+       methods: {
+           /**
+            * Register of a user
+            *
+            * @class Register
+            */
 
-                console.log('Test');
-                // POST request
-                var dataArray = {
-                    name: this.name,
-                    firstname: this.firstName,
-                    lastname: this.lastName,
-                    email: this.email,
-                    password: this.password,
-                    password_confirm: this.password,
-                    eth: this.ethereum_private_key,
-                    sex: "male",
-                    grant_type: "password",
-                    client_id: 1,
-                    client_secret: this.client_secret,
-                    scope: '*',
-                };
+           /**
+            * Submit and ajax method for the register
+            * @method submitForm
+            */
+           submitForm() {
 
-                this.$http(
-                {
-                    url: 'http://localhost:4242/newUser',
-                    method: 'POST',
-                    body: dataArray
-                }).then(function (response) {
-                    alert("ça marche");
-                    this.last_user = this.login;
-                    this.$router.push("/");
-                }, function (response) {
+               console.log('Test');
+               // POST request
+               var dataArray = {
+                   name: this.name,
+                   firstname: this.firstName,
+                   lastname: this.lastName,
+                   email: this.email,
+                   password: this.password,
+                   password_confirm: this.password,
+                   eth: this.ethereum_private_key,
+                   sex: "male",
+                   grant_type: "password",
+                   client_id: 1,
+                   client_secret: this.client_secret,
+                   scope: '*',
+               };
 
-                    // error callback
-                    alert(response.status);
-                });
+               this.$http({
+                   url: 'http://localhost:4242/newUser',
+                   method: 'POST',
+                   body: dataArray
+               }).then(function(response) {
+                   alert("ça marche");
+                   this.last_user = this.login;
+                   this.$router.push("/");
+               }, function(response) {
+
+                   // error callback
+                   alert(response.status);
+               });
 
 
-            },
-            addValidation() {
+           },
+           addValidation() {
 
-            },
-        }
-    }
+           },
+       }
+   }
 </script>

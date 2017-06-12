@@ -248,6 +248,9 @@
                 select_projects: [],
             }
         },
+        /**
+        * For all the front in javascript on tje profil page
+        */
         mounted() {
             $('.carousel.carousel-slider').carousel({full_width: true});
             $(".user_input").attr("disabled", true)
@@ -279,21 +282,22 @@
 
         methods: {
 
-
-            /*
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                Search section
-
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            */
-
+              /**
+                * Profil of a user
+                *
+                * @class Profil
+                */
             onInput() {
                 console.log('yyy')
                 this.select_orgas = this.fake.orgas;
                 this.select_projects = this.fake.projects;
             },
 
+             /**
+             * For all the organisation selection
+             * @method selectOrgas
+             * @param {Object} the reprensation of the organisation in json 
+             */
             selectOrgas(orga) {
                 this.select_orgas = []
                 this.select_input = ''
@@ -301,6 +305,11 @@
                 this.$router.push('/orgaProfil'); 
             },
 
+            /**
+             * Delete selected user
+             * @method deleteSelectedElem
+             * @param {Object} representation of the user in json
+             */
             deleteSelectedElem(user) {
                 console.log('lalala' + user.id)
                 for (var i = 0; i < this.select_selected.users.length; ++i) {
@@ -312,6 +321,11 @@
                 }
             },
 
+
+            /**
+             * @method closeSearchSection
+             * initialisation of the search section
+             */
             closeSearchSection() {
                 this.select_orgas = []
                 this.select_projects = []
@@ -320,10 +334,18 @@
             
             ///////////////
 
+            /**
+             * @method editPersonalInfos
+             * for edit the front during edition
+             */
             editPersonalInfos() {
                 $("ul.level-2").children().css( "background-color", "red" );
             },
 
+             /**
+             * @method openCamera
+             * Open the camera for take a picture
+             */
             openCamera() {
                 navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
                 destinationType: Camera.DestinationType.FILE_URI
@@ -371,6 +393,11 @@
                 }); */
             },
 
+
+            /**
+             * get the data from the auth
+            * @method processUserData
+             */
             processUserData() {
                this.profil_data = this.auth_data;
                console.log("dans profile -------");
@@ -381,8 +408,13 @@
                 //this.user_data.telephone = this.auth_data.user.phone;
                 this.user_data.nickname = this.profil_data.user.name;
                 this.ethereum_keys[0].key = this.profil_data.user.eth.mainKey;
+                //window.vue.emitInit(this.profil_data.user._id)
             },
 
+            /**
+            * @method lastNameChange
+             * For the edit of the lastname
+             */
             lastNameChange() {
                 if (this.profil_data.user.lastname != this.user_data.last_name) {
                     var dataArray = {
@@ -393,6 +425,10 @@
                 }
             },
 
+            /**
+            * @method firstNameChange
+             * For the edit of the firstname
+             */
             firstNameChange() {
                 if (this.profil_data.user.firstname != this.user_data.first_name) {
                     var dataArray = {
@@ -403,6 +439,11 @@
                 }
             },
 
+
+            /**
+             * For the edit of the email
+             * @method emailChange
+             */
              emailChange() {
                 if (this.profil_data.user.email != this.user_data.email) {
                      var dataArray = {
@@ -413,6 +454,10 @@
                 }
             },
 
+            /**
+             * For the edit of the nickname
+             * @method nickNameChange
+             */
             nickNameChange() {
                 if (this.profil_data.user.name != this.user_data.nickname) {
                     var dataArray = {
@@ -423,6 +468,12 @@
                 }
             },
 
+            /**
+             * Ajax request for the edition 
+             * @method changeName
+             * @param {Object} representation of the editable value in json
+             * '_id' of the user, 'name' of what you want to edit
+             */
             changeName(dataArray) {
                 console.log(dataArray);
                 var header = {
