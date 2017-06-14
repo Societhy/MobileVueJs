@@ -22,5 +22,10 @@ export default [
         path: '/orgaProfil',
         name: 'orgaProfil',
         component: require('./components/orgaProfil.vue')
+    },
+    {
+        path: '/orgaProfil',
+        name: 'orgaProfil',
+        component: require('./components/orgaProfil.vue')
     }
 ]
