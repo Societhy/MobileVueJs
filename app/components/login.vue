@@ -39,9 +39,14 @@
 export default {
     name: 'login',
 
-    store: ['message', 'auth_data', 'client_secret', 'socket'],
+    store: ['message', 'auth_data', 'client_secret', 'socket' , 'ip', 'ipPhone'],
 
-    mounted() {},
+    mounted() {
+        console.log("FUCKKKKKKK");
+        // if (window.vue.isPhoneGap()) {
+           // this.ip = this.ipPhone;
+         //}
+    },
 
     data: function() {
         return {
@@ -62,9 +67,9 @@ export default {
          * submit for the login
          */
         submitForm() {
-            this.auth_data = this.callAjax();
+            this.callAjax();
             console.log(this.auth_data);
-            this.nextPage();
+            //this.nextPage();
         },
 
         /**
@@ -76,10 +81,10 @@ export default {
                 "id": btoa(this.login + ':' + this.password)
             };
             var res = "";
-            var url = 'http://localhost:4242/login';
+            var url = this.ip + '/login';
             var xhr = $.ajax({
                 url: url,
-                async: false,
+                async: true,
                 dataType: "json",
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
@@ -89,11 +94,14 @@ export default {
                 crossDomain: true,
                 data: JSON.stringify(dataArray),
                 success: function(output, status, xhr) {
-                    res = output;
-                },
+                    this.auth_data = output;
+                    this.$socket.emit('init', {"id": this.auth_data.user._id});
+                    this.$router.push('/profil');
+                }.bind(this),
                 error: function(resultat, statut, erreur) {
-
-                },
+                    alert("Error: Wrong password or email/nickname");
+                    //this.$router.push('/login');
+                }.bind(this),
                 cache: false
             });
             return res;
@@ -107,7 +115,6 @@ export default {
         },
 
         success(output, status, xhr) {
-            this.auth_data = output
         },
 
         error(resultat, status, error) {
@@ -116,10 +123,6 @@ export default {
             console.log(status)
             console.log(error)
         },
-
-        nextPage() {
-            this.$router.push('/profil');
-        }
     }
 }
 </script>

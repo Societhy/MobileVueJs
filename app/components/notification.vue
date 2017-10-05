@@ -4,8 +4,8 @@
     <navBar></navBar>
    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <div class="row center-align">
-            <h2 class="blue-text col s12">Societhy</h2>
-            <h4 class="blue-text col s12 flow-text">All the organisations</h4>
+            <h2 class="blue-text col s12">Notification</h2>
+            <h4 class="blue-text col s12 flow-text">The unread one</h4>
         </div>
     <table ng-table="tableParams" show-filter="true" class="table bordered highlight" id="orga">
         <!-- ngInclude: templates.header -->
@@ -13,19 +13,19 @@
         <tr>
             <td>
             <a>
-                Organisation
+                Notification
             </a>
             </td>
             <td>
                 <a>
-                    Address
+                    Info
                 </a>
             </td>
         </tr>
     
         </thead>
         <tbody>
-             <tr v-for="item in orgas" @click="clickOrga(item)" >
+             <tr v-for="item in notifications" @click="clickNotif(item)" >
                 <td>
                     {{item.name}}
                 </td>
@@ -37,7 +37,7 @@
 </table>
      <div class="row">
         <router-link 
-                :to="{ name: 'allOrga' }">
+                :to="{ name: 'Notification' }">
         </router-link>
     </div>
 </div>
@@ -45,12 +45,12 @@
 
 <script type="text/babel">
 export default {
-    name: 'allOrga',
+    name: 'notification',
 
-    store: ['message', 'client_secret', 'profil_data', 'ip'],
+    store: ['message', 'client_secret', 'profil_data', 'auth_data', 'ip'],
 
     mounted() {
-         this.getOrgaMemberList();
+         this.getUserUnreadNotification();
     },
 
      components: {
@@ -60,7 +60,7 @@ export default {
 
     data: function() {
         return {
-           orgas: [{
+           notifications: [{
 
                      _id: "8xFEZOOFEZKOKOKOZFE32",
                      name: "MSF",
@@ -77,30 +77,30 @@ export default {
 
     methods: {
         /**
-         * Method for the allOrga
-         * @class AllOrga
+         * Method for the notification
+         * @class Notification
          */
 
         /**
-          * @method getAllOrganizations-
-          * Ajax for get the organisations
+          * @method getUserUnreadNotification-
+          * Ajax for get getUserUnreadNotification organisations
           */
-         getOrgaMemberList() {
-             var url = this.ip + '/getAllOrganizations';
+         getUserUnreadNotification() {
+             var url = this.ip + '/getUserUnreadNotification';
+             var authorizationToken = this.auth_data.token;
              console.log(url);
              var xhr = $.ajax({
                  url: url,
-                 dataType: "json",
                  type: 'GET',
-                 contentType: "application/json; charset=utf-8",
                  xhrFields: {
                      withCredentials: true
                  },
                  crossDomain: true,
                  beforeSend: function(request) {
+                    request.setRequestHeader("Authentification", authorizationToken);
                  },
                  success: function(output, status, xhr) {
-                 this.orgas = output;
+                 this.notifications = output;
                     
                  }.bind(this),
                  error: function(resultat, statut, erreur) {
@@ -110,9 +110,10 @@ export default {
              });
          },
 
-         clickOrga(orga) {
-            alert(orga._id);
-             this.$router.push({ name: 'orgaProfil', params: { orgaId : orga._id }});
+         clickNotif(notif) {
+            alert(notif._id);
+            console.log("oooooooo");
+             //this.$router.push({ name: 'orgaProfil', params: { orgaId : orga._id }});
          }
     }
 }

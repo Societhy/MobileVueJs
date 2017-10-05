@@ -1,34 +1,49 @@
 import { Vue, router, store } from './boot/core'
 import App from './components/app.vue'
+import io from 'socket.io-client';
 import VueSocketio from 'vue-socket.io';
-
-// require('materialize-css/dist/js/materialize.js')
-// require('jquery-validation/dist/jquery.validate.js')
-
+import VueToastr from '@deveodk/vue-toastr'
+// You need a specific loader for CSS files like https://github.com/webpack/css-loader
+// If you would like custom styling of the toastr the css file can be replaced
 
 var Vue = require('vue');
 var VueCookie = require('vue-cookie');
+//require('jquery-toast-plugin')
+
+var socketio = io('http://localhost:4242/');
+
+
 // Tell Vue to use the plugin
+Vue.use(VueSocketio, socketio);
 Vue.use(VueCookie);
-Vue.use(VueSocketio, 'http://localhost:4242');
+Vue.use(VueToastr, {
+    defaultPosition: 'toast-top-right',
+    defaultType: 'info',
+    defaultTimeout: 4000
+});
 
 var vm = new Vue({
-    router : router,
-    el: '#app',
-    render: h => h(App),
     data: { store },
     sockets:{
     connect: function(){
-        //Materialize.toast('test', 4000)
-      console.log('socket connected')
+      console.log('socket connected');
     },
-    notify: function(val){
-        console.log("-----CustomEmit")
-        console.log(val)
-        alert(val);
-      console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
+    sessionId: function(val){
+      console.log('sessionId');
+      console.log(val);
+      this.store.sessionId = val;
+    },
+    txResult: function(val){
+
+      console.log(val)
+      console.log("txResult");
+      this.$toastr('success', 'Success', val.event);
+      this.store.txResult = val.event;
     }
   },
+    router : router,
+    el: '#app',
+    render: h => h(App),
     methods: {
         /**
         * The Application method
@@ -105,14 +120,6 @@ var vm = new Vue({
         setAuthData(_auth_data) {
             this.store.auth_data = _auth_data;
         },
-        /**
-        *
-        */
-        emitInit: function(id){
-            console.log('initemit')
-            Materialize.toast('test', 4000)
-            this.$socket.emit('init', {'id': id});
-        }
     }
 })
 

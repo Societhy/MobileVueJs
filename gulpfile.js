@@ -9,4 +9,5 @@ elixir(function (mix) {
        .webpack('./app/app.js', './../Mobile/www/js/app.js')
        .webpack('./node_modules/materialize-css/dist/js/materialize.js', './../Mobile/www/js/materialize.js')
        .webpack('./node_modules/jquery-validation/dist/jquery.validate.js', './../Mobile/www/js/validate.js')
+       .webpack('./node_modules/jquery-toast-plugin/src/jquery.toast.js', './../Mobile/www/js/jquery.toast.js')
 })

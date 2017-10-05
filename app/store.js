@@ -4,16 +4,16 @@
   */
 
 export default {
-    socket: '',
     message: 'Hello world!',
     auth_data: '',
     profil_data: '',
     last_user: '',
     resp_header: '',
 	ip: "http://localhost:4242",
-    ipPhone:"quelquechose:4242",
+    ipPhone:"http://192.168.1.13:4242",
 	token: '',
-
+    sessionId: '',
+    txResult: '',
     fake: {
         users: [
             {

@@ -1,5 +1,7 @@
 <template>
     <div class="container">
+    <navBar></navBar>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <div id="upper_profile_div" class="parallax-container">
             <div class="parallax">
                 <img id="background_pic" class="centered no_fit" v-bind:src="user_data.cover_url">
@@ -66,18 +68,6 @@
                 </div>
                 <div class="row">
                     <div class="col s5">
-                        <div class="field_header">Telephone</div>
-                    </div>
-                    <div class="col s6 editable">
-                        <input id="telephone" type="text" class="user_input disabled" v-model="user_data.telephone">
-                    </div>
-                    <div class="buttons col s1 secondary-content">
-                        <i class="edit fa fa-pencil absolute top_padding"></i>
-                        <i class="save fa fa-floppy-o invisible absolute top_padding"></i>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s5">
                         <div class="field_header">Email</div>
                     </div>
                     <div class="col s6 editable">
@@ -90,6 +80,16 @@
                         </a>
                     </div>
                 </div>
+                <div class="row friendBtn">
+                    <div class="col s5">
+                        <div class="field_header">Add as Friend</div>
+                    </div>
+                    <div class="col s6 editable">
+                        <a  @click="addFriend" class="waves-effect waves-light btn" >
+                                    Add as contact
+                         </a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="section white">
@@ -99,14 +99,10 @@
                     <li v-for="item in ethereum_keys">
                         <div class="row">
                             <div class="col s9">
-                                {{ item.key }}
+                                Key : {{ item.address }}
                             </div>
                             <div class="col s2">
-                                {{ item.date }}
-                            </div>
-                            <div class="col s1">
-                                <i class="edit fa fa-pencil absolute little_top_padding"></i>
-                                <i class="save fa fa-floppy-o invisible absolute little_top_padding"></i>
+                                {{ item.balance }}
                             </div>
                         </div>
                     </li>
@@ -163,7 +159,7 @@
             <div class="profile_block z-depth-1 overflow">
                 <h2 class="header">Mes Projets</h2>
                 <ul id="projects_list" class="overflow">
-                    <li class="squared_list" v-for="item in orgas">
+                    <li class="squared_list" v-for="item in projects">
                         <div class="picture_mini">
                             <img v-bind:src="item.url" class="square_picture absolute">
                             <div class="picture_infos center-align black transparent_low center-align absolute" style="color:#b3e5fc">
@@ -190,7 +186,17 @@
  export default {
         name: 'profil',
 
-        store: ['message', 'auth_data', 'client_secret', 'fake'],
+        store: ['message', 'auth_data', 'client_secret', 'fake', 'sessionId', 'ip'],
+
+         components: {
+         "searchsection": require('./search/search_section.vue'),
+         "navBar" : require('./navBar.vue'),
+        },
+         props: {
+            user : {
+                required: false,
+            },
+        },
 
         data: function () {
             return {
@@ -205,24 +211,43 @@
                 },
                 ethereum_keys: [
                     {
-                        id: 1,
-                        key: "AA5dw76d8dv7tefb98b7ter8vwev9wb8etb8erb7v8wcer6w5qw8",
-                        date: "12/12/2016",
+                        address: "AA5dw76d8dv7tefb98b7ter8vwev9wb8etb8erb7v8wcer6w5qw8",
+                        balance: "50",
                     },
                     {
-                        id: 1,
-                        key: "AA5dw76d8dv7tefb98b7ter8vwev9wb8etb8erb7v8wcer6w5qw8",
-                        date: "12/12/2016",
+                        address: "AA5dw76d8dv7tefb98b7ter8vwev9wb8etb8erb7v8wcer6w5qw8",
+                        balance: "1000",
                     },
                     {
-                        id: 1,
-                        key: "AA5dw76d8dv7tefb98b7ter8vwev9wb8etb8erb7v8wcer6w5qw8",
-                        date: "12/12/2016",
+                        address: "AA5dw76d8dv7tefb98b7ter8vwev9wb8etb8erb7v8wcer6w5qw8",
+                        balance: "12",
                     },
                 ],
                 lat: 'null',
                 lng: 'null',
                 orgas: [
+                    {
+                        id: 1,
+                        name: "MSF",
+                        url: "https://pbs.twimg.com/profile_images/648421197844054016/wmrRb2GU.png",
+                    },
+                    {
+                        id: 2,
+                        name: "Humanis",
+                        url: "https://www.newsassurancespro.com/wp-content/uploads/2012/02/Humanis.jpg",
+                    },
+                    {
+                        id: 3,
+                        name: "Croix Rouge",
+                        url: "https://pbs.twimg.com/profile_images/779289835848818688/yifTHAJE.jpg",
+                    },
+                    {
+                        id: 4,
+                        name: "SOS Fantom",
+                        url: "https://upload.wikimedia.org/wikipedia/fr/thumb/1/1c/SOS_Fant%C3%B4mes_-_Logo.svg/langfr-220px-SOS_Fant%C3%B4mes_-_Logo.svg.png",
+                    },
+                ],
+                projects: [
                     {
                         id: 1,
                         name: "MSF",
@@ -252,6 +277,7 @@
         * For all the front in javascript on tje profil page
         */
         mounted() {
+            this.profil_data = Object.assign({}, this.auth_data);
             $('.carousel.carousel-slider').carousel({full_width: true});
             $(".user_input").attr("disabled", true)
             $(".parallax").parallax();
@@ -264,20 +290,23 @@
                                              { enableHighAccuracy: true, dtimeout : 5000});
             }
             console.log('edit')
-            $('.fa.fa-pencil').on('click', function() {
-                console.log("1")
-                $(this).parent().parent().children(".editable").children(".user_input").attr("disabled", false);
-                $(this).removeClass("visible").addClass("invisible");
-                $(this).parent().children(".asave").children(".save").removeClass("invisible").addClass("visible");
-
-            });
-            $('.fa.fa-floppy-o').on('click', function() {
-                console.log("2")
-                $(this).parent().parent().parent().children(".editable").children(".user_input").attr("disabled", true);
-                $(this).removeClass("visible").addClass("invisible");
-                $(this).parent().parent().children(".edit").removeClass("invisible").addClass("visible");
-            });
+            if (this.user) {
+                console.log(this.user._id);
+                console.log("against : ");
+                console.log(this.auth_data.user._id);
+                if (this.user._id == this.auth_data.user._id) {
+                    $(".friendBtn").hide();
+                    this.modify();
+                } else {
+                    $(".friendBtn").show();
+                }
+                this.profil_data.user = Object.assign({}, this.user);
+            } else {
+                this.modify();
+                $(".friendBtn").hide();
+            }
             this.getUserData();
+            this.getSocketID();
         },
 
         methods: {
@@ -293,6 +322,22 @@
                 this.select_projects = this.fake.projects;
             },
 
+            modify() {
+                $('.fa.fa-pencil').on('click', function() {
+                     console.log("1")
+                     $(this).parent().parent().children(".editable").children(".user_input").attr("disabled", false);
+                     $(this).removeClass("visible").addClass("invisible");
+                     $(this).parent().children(".asave").children(".save").removeClass("invisible").addClass("visible");
+
+                 });
+                  $('.fa.fa-floppy-o').on('click', function() {
+                     console.log("2")
+                     $(this).parent().parent().parent().children(".editable").children(".user_input").attr("disabled", true);
+                     $(this).removeClass("visible").addClass("invisible");
+                     $(this).parent().parent().children(".edit").removeClass("invisible").addClass("visible");
+                  });
+            },
+
              /**
              * For all the organisation selection
              * @method selectOrgas
@@ -302,7 +347,7 @@
                 this.select_orgas = []
                 this.select_input = ''
 
-                this.$router.push('/orgaProfil'); 
+                this.$router.push({ name: 'orgaProfil', params: { orgaId : orga._id }}); 
             },
 
             /**
@@ -380,35 +425,18 @@
             },
 
             getUserData() {
-                this.processUserData();
-                /*
-                console.log('before request')
-                this.$http({
-                    url: 'http://localhost:4242/',
-                    method: 'GET',
-                }).then(function (response) {
-                    this.processUserData(window.vue.getJSONData(response));
-                }, function (response) {
-                    console.log(response)
-                }); */
-            },
-
-
-            /**
-             * get the data from the auth
-            * @method processUserData
-             */
-            processUserData() {
-               this.profil_data = this.auth_data;
-               console.log("dans profile -------");
-                console.log(this.auth_data);
                 this.user_data.first_name = this.profil_data.user.firstname;
                 this.user_data.last_name = this.profil_data.user.lastname;
                 this.user_data.email = this.profil_data.user.email;
-                //this.user_data.telephone = this.auth_data.user.phone;
                 this.user_data.nickname = this.profil_data.user.name;
-                this.ethereum_keys[0].key = this.profil_data.user.eth.mainKey;
-                //window.vue.emitInit(this.profil_data.user._id)
+                var parsed = this.profil_data.user.eth.keys;
+                        var arrProp = [];
+                        for(var x in parsed){
+                            arrProp.push(parsed[x]);
+                        }
+                this.ethereum_keys = arrProp;
+                this.orgas = this.profil_data.user.organizations;
+                this.projects = this.profil_data.user.projects;
             },
 
             /**
@@ -468,6 +496,79 @@
                 }
             },
 
+
+
+            /**
+             * To get the socket id
+             * @method getSocketID
+             */
+            getSocketID(dataArray) {
+                console.log("GetsocketId");
+                var url = this.ip + '/socketid/';
+                url = url + this.sessionId;
+                 var authorizationToken = this.auth_data.token;
+                var xhr = $.ajax({
+                    url: url,
+                     dataType: "json",
+                     type: 'GET',
+                     contentType: "application/json; charset=utf-8",
+                    xhrFields: {
+                      withCredentials: true
+                    },
+                     crossDomain: true,
+                     data: JSON.stringify(dataArray),
+                     beforeSend: function(request) {
+                        request.setRequestHeader("Authentification", authorizationToken);
+                    },
+                    success: function(output, status, xhr) {
+                           console.log(output);
+                    }.bind(this),
+                    error: function(resultat, statut, erreur) {
+                          alert(resultat);
+                 },
+                    cache: false
+                });
+            },
+
+
+            /**
+             * To add a friend 
+             * @method addFriend
+             */
+            addFriend() {
+                var dataArray = {
+                "_id": this.auth_data.user._id,
+                "contact" : {
+                    "id": this.profil_data.user._id,
+                    "firstname": this.profil_data.user.firstname,
+                    "lastname": this.profil_data.user.lastname,
+                    }
+                }
+                var header = {
+                           'authentification' : this.profil_data.token,
+                }
+                var url = this.ip + '/addToContact';
+                var authorizationToken = this.auth_data.token;
+                var xhr = $.ajax({
+                url: url,
+                dataType : "json",
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                xhrFields: { withCredentials: true },
+                crossDomain: true,
+                data: JSON.stringify(dataArray),
+                    beforeSend: function(request) {
+                        request.setRequestHeader("Authentification", authorizationToken);
+                    },
+                    success: function(output, status, xhr) {
+                        this.auth_data.user = output;
+                    }.bind(this),
+                    error : function(resultat, statut, erreur){
+                        this.$toastr('error', 'Error cannot add this contact', 'Error');
+                    }.bind(this),
+                    cache: false});
+                },
+
             /**
              * Ajax request for the edition 
              * @method changeName
@@ -477,11 +578,11 @@
             changeName(dataArray) {
                 console.log(dataArray);
                 var header = {
-                           'authentification' : this.profil_data.token,
+                           'authentification' : this.auth_data.token,
                 }
-                var url = 'http://localhost:4242/updateUser';
-                var authorizationToken = this.profil_data.token;
-            var xhr = $.ajax({
+                var url = this.ip + '/updateUser';
+                var authorizationToken = this.auth_data.token;
+                var xhr = $.ajax({
                 url: url,
                 dataType : "json",
                 type: 'POST',
@@ -492,17 +593,11 @@
                 beforeSend: function(request) {
                     request.setRequestHeader("Authentification", authorizationToken);
                 },
-        success: function(output, status, xhr) {
-            },
-        error : function(resultat, statut, erreur){
-
-            },
-            cache: false
-        });
+            success: function(output, status, xhr) {
+                 },
+            error : function(resultat, statut, erreur){},
+                cache: false});
             }
         },
-    ready() {
-        this.processUserData();
-    }
     }
 </script>

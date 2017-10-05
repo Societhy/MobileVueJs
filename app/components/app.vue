@@ -1,8 +1,12 @@
 <template>
     <div id="app" :class="routeClass">
+    <head>
+        <link rel="stylesheet" src="../../assets/scss/jquery.toast.css">
+    </head>
         <router-view></router-view>
     </div>
 </template>
+
 
 <script type="text/babel">
     export default {
@@ -26,9 +30,5 @@
             }
 
         },
-
-        components: {
-            'navbar': require('./nav/navbar.vue')
-        }
     }
 </script>

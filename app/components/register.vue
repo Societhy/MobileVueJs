@@ -51,7 +51,7 @@
 export default {
        name: 'register',
 
-       store: ['message', 'last_user', 'client_secret'],
+       store: ['message', 'last_user', 'client_secret' , 'ip'],
 
        data: function() {
            return {
@@ -101,7 +101,7 @@ export default {
                };
 
                this.$http({
-                   url: 'http://localhost:4242/newUser',
+                   url: this.ip + '/newUser',
                    method: 'POST',
                    body: dataArray
                }).then(function(response) {
