@@ -4,21 +4,27 @@
     <navBar></navBar>
    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <div class="row center-align">
-            <h2 class="blue-text col s12">Notification</h2>
-            <h4 class="blue-text col s12 flow-text">The unread one</h4>
+            <h2 class="blue-text col s12">Notifications</h2>
         </div>
+     <div class="row">
+        <div class="col s4">
+                <a  @click="clickAllRead" class="waves-effect waves-light btn" >
+                    Mark all as read
+        </a>
+        </div>
+    </div>
     <table ng-table="tableParams" show-filter="true" class="table bordered highlight" id="orga">
         <!-- ngInclude: templates.header -->
         <thead class="ng-scope">
         <tr>
             <td>
             <a>
-                Notification
+                Description
             </a>
             </td>
             <td>
                 <a>
-                    Info
+                    date
                 </a>
             </td>
         </tr>
@@ -27,19 +33,14 @@
         <tbody>
              <tr v-for="item in notifications" @click="clickNotif(item)" >
                 <td>
-                    {{item.name}}
+                    {{item.description}}
                 </td>
                 <td>
-                    {{item._id}}
+                    {{item.date}}
                 </td>    
             </tr>
         </tbody>
 </table>
-     <div class="row">
-        <router-link 
-                :to="{ name: 'Notification' }">
-        </router-link>
-    </div>
 </div>
 </template>
 
@@ -60,18 +61,7 @@ export default {
 
     data: function() {
         return {
-           notifications: [{
-
-                     _id: "8xFEZOOFEZKOKOKOZFE32",
-                     name: "MSF",
-                     url: "https://pbs.twimg.com/profile_images/648421197844054016/wmrRb2GU.png",
-                 },
-                 {
-                     _id: "8xFFIZFPFEZPFPZEP323",
-                     name: "Humanis",
-                     url: "https://www.newsassurancespro.com/wp-content/uploads/2012/02/Humanis.jpg",
-                 }
-             ],
+           notifications: [],
         }
     },
 
@@ -100,7 +90,10 @@ export default {
                     request.setRequestHeader("Authentification", authorizationToken);
                  },
                  success: function(output, status, xhr) {
-                 this.notifications = output;
+                 //console.log(output);
+                 //console.log(JSON.parse(output));
+                 this.notifications = JSON.parse(output);
+                 console.log(this.notifications);
                     
                  }.bind(this),
                  error: function(resultat, statut, erreur) {
@@ -110,10 +103,45 @@ export default {
              });
          },
 
+         markNotificationsAsRead(notifs) {
+             var url = this.ip + '/markNotificationsAsRead';
+             var authorizationToken = this.auth_data.token;
+             console.log(url);
+             var xhr = $.ajax({
+                 url: url,
+                 type: 'POST',
+                 xhrFields: {
+                     withCredentials: true
+                 },
+                 data: JSON.stringify(notifs),
+                 crossDomain: true,
+                 dataType: "json",
+                 contentType: "application/json; charset=utf-8",
+                 beforeSend: function(request) {
+                    request.setRequestHeader("Authentification", authorizationToken);
+                 },
+                 success: function(output, status, xhr) {
+                    
+                 }.bind(this),
+                 error: function(resultat, statut, erreur) {
+
+                 },
+                 cache: false
+             });
+         },
+
+         clickAllRead() {
+             this.markNotificationsAsRead({"data" : this.notifications});
+         },
+
          clickNotif(notif) {
-            alert(notif._id);
-            console.log("oooooooo");
-             //this.$router.push({ name: 'orgaProfil', params: { orgaId : orga._id }});
+           var notifications = [];
+           notifications.push(notif);
+           this.markNotificationsAsRead({"data" : notifications});
+            if (notif.category == "NewMember" || notif.category == "newInviteJoinOrga" 
+                || notif.category == "orgaCreated")
+                if (notif.sender.type == "Entreprise")
+                     this.$router.push({ name: 'orgaProfil', params: { orgaId : notif.sender.id.$oid}});
          }
     }
 }
